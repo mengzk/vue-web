@@ -1,14 +1,14 @@
 
 import { createRouter, createWebHistory } from "vue-router";
-import RegisterView from "./pages/RegisterView.vue";
+import Launch from "./pages/Launch.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: "/",
-      name: "register",
-      component: RegisterView,
+      name: "launch",
+      component: Launch,
     },
   ],
 });
