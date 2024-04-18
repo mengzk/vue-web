@@ -1,44 +1,67 @@
-/**
- * Author: Meng
- * Date: 2024-04-15
- * Modify: 2024-04-15
- * Desc:
- */
+import AppConfig from "../../config/index";
 
-import axios from "axios";
-
-const instance = axios.create({
-  // baseURL: '',
-  timeout: 30000, // 毫秒
-  headers: { "Content-Type": "application/json; charset=utf-8" },
-});
-
-const headers = { "Content-Type": "multipart/form-data" };
+// 上传文件
+const host = AppConfig.host;
 // 上传
-export function upload() {
+export function upload({ file, params = {} } = {}) {
   return new Promise((resolve, reject) => {
-    const data = new FormData();
-    instance
-      .request({ url: "", data, headers })
-      .then((response) => {
-        resolve(response);
+    const options = {
+      url: `${host}/upload`,
+      method: "POST",
+      data: null,
+      headers,
+    };
+
+    const formData = new FormData();
+    formData.append("file", file);
+    Object.keys(params).forEach((key) => {
+      formData.append(key, params[key]);
+    });
+
+    fetch(options.url, options)
+      .then((res) => res.json())
+      .then((res) => {
+        resolve(res);
       })
       .catch((err) => {
         reject(err);
       });
   });
 }
-
-// 下载
-export function download(url) {
+// 上传
+export function uploads({ files = [], params = {} } = {}) {
   return new Promise((resolve, reject) => {
-    instance
-      .request({ url })
-      .then((response) => {
-        resolve(response);
+    const options = {
+      url: `${host}/upload`,
+      method: "POST",
+      body: null,
+    };
+
+    const formData = new FormData();
+    files.forEach((file) => {
+      formData.append("files", file);
+    });
+    Object.keys(params).forEach((key) => {
+      formData.append(key, params[key]);
+    });
+
+    options.body = formData;
+
+    fetch(options.url, options)
+      .then((res) => res.json())
+      .then((res) => {
+        if (res.code == 200) {
+          resolve(res.data);
+        }else {
+          reject(res);
+        }
       })
       .catch((err) => {
         reject(err);
       });
   });
+}
+// 下载
+export function download(url) {
+  return new Promise((resolve, reject) => {});
 }

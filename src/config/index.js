@@ -6,8 +6,8 @@
  */
 
 const AppConfig = {
-  env: '',
-  host: '',
+  env: 'prod',
+  host: 'http://localhost:3000',
 }
 
 export default AppConfig;
