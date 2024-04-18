@@ -41,11 +41,11 @@ const guide =
     <div class="re-box">
       <div class="re-input-item">
         <span class="re-input-item-label">姓名</span>
-        <input class="re-input-item-input" type="text" placeholder="请输入" />
+        <input class="re-input-item-input" v-model="userName" type="text" placeholder="请输入" />
       </div>
       <div class="re-input-item">
         <span class="re-input-item-label">手机号</span>
-        <input class="re-input-item-input" type="" placeholder="请输入" />
+        <input class="re-input-item-input" v-model="userPhone" type='number' placeholder="请输入" />
       </div>
       <div class="re-input-item">
         <span class="re-input-item-label">性别</span>
@@ -53,7 +53,7 @@ const guide =
       </div>
       <div class="re-input-item">
         <span class="re-input-item-label">常住地址</span>
-        <span class="re-input-item-input">省、市、区</span>
+        <span class="re-input-item-input">{{userAds || '省、市、区'}}</span>
         <img class="re-item-icon" :src="right"/>
       </div>
       <div class="re-input-item">
@@ -61,12 +61,13 @@ const guide =
         <input
           class="re-input-item-input"
           type="text"
+          v-model="userAdsInfo"
           placeholder="街道、楼牌号等"
         />
       </div>
       <div class="re-input-item">
         <span class="re-input-item-label">身份证地址</span>
-        <span class="re-input-item-input">省、市、区</span>
+        <span class="re-input-item-input">{{cardAds || '省、市、区'}}</span>
         <img class="re-item-icon" :src="right"/>
       </div>
       <div class="re-input-item">
@@ -74,6 +75,7 @@ const guide =
         <input
           class="re-input-item-input"
           type="text"
+          v-model="cardAdsInfo"
           placeholder="街道、楼牌号等"
         />
       </div>
