@@ -1,3 +1,4 @@
+import { showLoadingToast, showToast } from 'vant';
 
 import AppConfig from "../../config/index";
 import { interceptor, network } from "./config";
@@ -101,11 +102,20 @@ function parseError(res, url) {
 function showToast(msg) {
   // console.log(msg)
   if (msg) {
+    showToast(msg);
   }
 }
 
 // 显示加载中
 function showLoading(loading, msg) {
   // console.log(loading, text);
+  if(loading) {
+    showLoadingToast({
+      message: '加载中...',
+      forbidClick: true,
+    });
+  }else {
+    // showLoadingToast.close();
+  }
 }
 

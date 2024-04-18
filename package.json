@@ -9,6 +9,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@vant/area-data": "^1.5.1",
+    "vant": "^4.8.11",
     "vue": "^3.4.21",
     "vue-router": "^4.3.0"
   },
