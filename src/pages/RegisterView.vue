@@ -30,7 +30,7 @@ const loading = ref(false); //
 const imgs = [null, null]; //
 let userCity = [];
 let cardCity = [];
-let pageParams = {code: '',id:''};
+let pageParams = { code: "123456", id: "123456" };
 
 const guide =
   "本人承诺以上信息全部真实且有效。同时，本人授权公司对我所填写的信息进行核实。如有虚假，本人愿接受公司规则制度处理，包括但不限于与本人解除劳动关系。";
@@ -38,16 +38,16 @@ const guide =
 onMounted(() => {
   const params = getUrlParams();
   // console.log('------->params', params)
-  if(params.code == null) {
+  if (params.code == null) {
     console.log("分享码错误");
     showToast("分享码错误");
-    return;
-  }else {
-    const codes = params.code.split('I')[0];
+    // return;
+  } else {
+    const codes = params.code.split("I")[0];
     pageParams.id = codes[0];
     pageParams.code = codes[1];
   }
-  
+
   const group = document.getElementById("radio-group");
   group.addEventListener("change", (e) => {
     const target = e.target;
@@ -95,11 +95,11 @@ function onCardAddress() {
 function onAreaConfirm(res) {
   console.log("onConfirm", res);
   showPopup.value = false;
-  const list = res.selectedOptions||[];
-  if(areaTag == 0) {
+  const list = res.selectedOptions || [];
+  if (areaTag == 0) {
     userCity = list;
     userAds.value = list.map((item) => item.text).join("/");
-  }else {
+  } else {
     cardCity = list;
     cardAds.value = list.map((item) => item.text).join("/");
   }
@@ -107,27 +107,27 @@ function onAreaConfirm(res) {
 
 async function onSubmit() {
   console.log("submit", userSex.value, agree.value);
-  if(userName.value == "") {
+  if (userName.value == "") {
     console.log("请输入姓名");
     showToast("请输入姓名");
     return;
-  } else if(userPhone.value == "") {
+  } else if (userPhone.value == "") {
     console.log("请输入手机号");
     showToast("请输入手机号");
     return;
-  } else if(userAds.value == "") {
+  } else if (userAds.value == "") {
     console.log("请选择常住地址");
     showToast("请选择常住地址");
     return;
-  } else if(userAdsInfo.value == "") {
+  } else if (userAdsInfo.value == "") {
     console.log("请输入详细地址");
     showToast("请输入详细地址");
     return;
-  } else if(cardAds.value == "") {
+  } else if (cardAds.value == "") {
     console.log("请选择身份证地址");
     showToast("请选择身份证地址");
     return;
-  } else if(cardAdsInfo.value == "") {
+  } else if (cardAdsInfo.value == "") {
     console.log("请输入详细地址");
     showToast("请输入详细地址");
     return;
@@ -144,25 +144,29 @@ async function onSubmit() {
   loading.value = true;
   showLoadingToast("提交中...");
 
+  const fileParams = {
+    inviteVerificationCode: pageParams.code,
+    inviterId: pageParams.id,
+  };
+
   let imgObj = {};
   let img2Obj = {};
-  const res1 = await uploadImg(imgs[0]);
-  if(res1.code == '1') {
+  const res1 = await uploadImg(imgs[0], fileParams);
+  if (res1.code == "1") {
     imgObj = res1.data;
   } else {
     showToast("上传图片失败");
     loading.value = false;
     return;
   }
-  const res2 = await uploadImg(imgs[1]);
-  if(res2.code == '1') {
+  const res2 = await uploadImg(imgs[1], fileParams);
+  if (res2.code == "1") {
     img2Obj = res2.data;
   } else {
     showToast("上传图片失败");
     loading.value = false;
     return;
   }
-  
 
   const res3 = await submitApply({
     backIdentityCardFileKey: imgObj.fileKey,
@@ -171,15 +175,15 @@ async function onSubmit() {
     frontIdentityCardFileUrl: img2Obj.fileUrl,
     provinceCode: userCity[0].value,
     provinceName: userCity[0].text,
-    cityCode:  userCity[1].value,
-    cityName:  userCity[1].text,
-    districtCode: userCity[2].value||'',
-    districtName: userCity[2].text||'',
+    cityCode: userCity[1].value,
+    cityName: userCity[1].text,
+    districtCode: userCity[2].value || "",
+    districtName: userCity[2].text || "",
     resideAddress: userAdsInfo.value,
     idCardCityCode: cardCity[1].value,
     idCardCityName: cardCity[1].value,
-    idCardDistrictCode: cardCity[2].value||'',
-    idCardDistrictName: cardCity[2].value||'',
+    idCardDistrictCode: cardCity[2].value || "",
+    idCardDistrictName: cardCity[2].value || "",
     idCardProvinceCode: cardCity[0].value,
     idCardProvinceName: cardCity[0].value,
     idCardAddress: cardAdsInfo.value,
@@ -192,7 +196,7 @@ async function onSubmit() {
 
   loading.value = false;
 
-  if(res3.code == 0) {
+  if (res3.code == 0) {
     console.log("提交成功");
     showToast("提交成功");
   } else {
@@ -206,7 +210,7 @@ async function onSubmit() {
 
 <template>
   <div class="re-page">
-    <span class="re-title">PKL入职申请</span>
+    <!-- <span class="re-title">PKL入职申请</span> -->
     <div class="re-box">
       <div class="re-input-item">
         <span class="re-input-item-label">姓名</span>

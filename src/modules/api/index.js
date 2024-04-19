@@ -12,10 +12,10 @@ export function submitApply(params={}) {
 }
 
 // 文件上传 
-export function uploadImg(file) {
+export function uploadImg(file, params={}) {
   return upload({
     file,
-    path: '/pklApi/private/file/uploadFile',
-    params: {}
+    url: '/pklApi/public/joining/uploadFile',
+    params
   });
 }

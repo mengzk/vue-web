@@ -1,10 +1,15 @@
-import { showLoadingToast, showToast } from 'vant';
+import { showLoadingToast, showToast } from "vant";
 
 import AppConfig from "../../config/index";
 import { interceptor, network } from "./config";
 
 // 请求入口
-export function request({ url, method = "GET", params = {}, headers = {} }={}) {
+export function request({
+  url,
+  method = "GET",
+  params = {},
+  headers = {},
+} = {}) {
   return new Promise((resolve, reject) => {
     const host = AppConfig.host;
     const options = {
@@ -22,20 +27,20 @@ export function request({ url, method = "GET", params = {}, headers = {} }={}) {
       .then((res) => {
         // 隐藏加载中
         onShowLoading(false);
-        const { code, data, message } = parseData(res, url);
+        const { code, data, msg } = parseData(res, url);
         if (code == 200) {
           resolve(data);
         } else {
-          onShowToast(message);
-          reject({ code, message });
+          onShowToast(msg);
+          resolve({ code, msg });
         }
       })
       .catch((err) => {
         // 隐藏加载中
         onShowLoading(false);
-        const { code, message } = parseError(err, url);
+        const { code, msg } = parseError(err, url);
         onShowToast(message);
-        reject({ code, message });
+        resolve({ code, msg });
       });
   });
 }
@@ -43,23 +48,22 @@ export function request({ url, method = "GET", params = {}, headers = {} }={}) {
 // 解析response数据 -
 function parseData(res, url) {
   let code = res.status;
-  let message = res.statusText || "ok";
-  let headers = {}; // res.headers;
+  let msg = res.statusText || "ok";
   let data = res.data || {};
 
   if (code == 200) {
     code = data.code;
-    message = data.message || data.data;
+    msg = data.statusText || data.data;
     data = data.data;
   }
 
-  return { code, data, message: "", headers };
+  return { code, data, msg: "" };
 }
 
 // 解析错误信息 -
 function parseError(res, url) {
   let code = res.code,
-    message = "",
+    msg = "",
     status = -1;
   const reqInfo = res.request || {};
 
@@ -70,32 +74,30 @@ function parseError(res, url) {
     switch (status) {
       case 0:
         status = -1;
-        message = `${
-          code == "econnaborted" ? "请求超时" : "网络异常"
-        }，请重新连接`;
+        msg = `${code == "econnaborted" ? "请求超时" : "网络异常"}，请重新连接`;
         break;
       case 403:
-        message = "请求地址不能访问";
+        msg = "请求地址不能访问";
         break;
       case 404:
-        message = "请求地址不存在";
+        msg = "请求地址不存在";
         break;
       case 405:
-        message = "请求方式错误，请联系开发人员";
+        msg = "请求方式错误，请联系开发人员";
         break;
       case 500:
       case 502:
-        message = "服务重启中, 请稍后";
+        msg = "服务重启中, 请稍后";
         break;
       case 504:
-        message = "网关连接超时, 请稍后";
+        msg = "网关连接超时, 请稍后";
         break;
       default:
-        message = `抱歉, 请求失败:${status}`;
+        msg = `抱歉, 请求失败:${status}`;
         break;
     }
   }
-  return { code: status, message };
+  return { code: status, msg };
 }
 
 // 显示toast
@@ -109,13 +111,12 @@ function onShowToast(msg) {
 // 显示加载中
 function onShowLoading(loading, msg) {
   // console.log(loading, text);
-  if(loading) {
+  if (loading) {
     showLoadingToast({
-      message: '加载中...',
+      message: "加载中...",
       forbidClick: true,
     });
-  }else {
+  } else {
     // showLoadingToast.close();
   }
 }
-
