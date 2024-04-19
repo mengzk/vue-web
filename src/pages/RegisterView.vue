@@ -25,6 +25,7 @@ const cardAdsInfo = ref(""); //
 const img1 = ref(shen_zm); //
 const img2 = ref(shen_fm); //
 const agree = ref(true); //
+const loading = ref(false); //
 
 const imgs = [null, null]; //
 let userCity = [];
@@ -140,7 +141,9 @@ async function onSubmit() {
     return;
   }
 
+  loading.value = true;
   showLoadingToast("提交中...");
+
   let imgObj = {};
   let img2Obj = {};
   const res1 = await uploadImg(imgs[0]);
@@ -148,6 +151,7 @@ async function onSubmit() {
     imgObj = res1.data;
   } else {
     showToast("上传图片失败");
+    loading.value = false;
     return;
   }
   const res2 = await uploadImg(imgs[1]);
@@ -155,9 +159,10 @@ async function onSubmit() {
     img2Obj = res2.data;
   } else {
     showToast("上传图片失败");
+    loading.value = false;
     return;
   }
-
+  
 
   const res3 = await submitApply({
     backIdentityCardFileKey: imgObj.fileKey,
@@ -184,6 +189,9 @@ async function onSubmit() {
     gender: userSex.value,
     userName: userName.value,
   });
+
+  loading.value = false;
+
   if(res3.code == 0) {
     console.log("提交成功");
     showToast("提交成功");
@@ -191,6 +199,7 @@ async function onSubmit() {
     console.log("提交失败");
     showToast("提交失败");
   }
+
   // showLoadingToast().close();
 }
 </script>
@@ -278,7 +287,7 @@ async function onSubmit() {
     </div>
     <input id="v-ar-upload-input" hidden />
     <div class="re-btn-box">
-      <button @click="onSubmit">提 交</button>
+      <button :disabled="loading" @click="onSubmit">提 交</button>
     </div>
 
     <Popup v-model:show="showPopup" round position="bottom">
