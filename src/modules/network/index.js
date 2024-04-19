@@ -10,16 +10,16 @@ export function request({
   params = {},
   headers = {},
 } = {}) {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     const host = AppConfig.host;
+    headers['Content-Type'] = "application/json";
+    
     const options = {
       url: `${host}${url}`,
       method,
       params,
       headers,
     };
-    // 请求头及参数处理
-    options.headers = interceptor(options.params, options.headers);
     // 显示加载中
     onShowLoading(true);
 
@@ -27,13 +27,8 @@ export function request({
       .then((res) => {
         // 隐藏加载中
         onShowLoading(false);
-        const { code, data, msg } = parseData(res, url);
-        if (code == 200) {
-          resolve(data);
-        } else {
-          onShowToast(msg);
-          resolve({ code, msg });
-        }
+        // const { code, data, msg } = parseData(res, url);
+        resolve(res);
       })
       .catch((err) => {
         // 隐藏加载中

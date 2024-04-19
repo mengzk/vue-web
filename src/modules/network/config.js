@@ -10,18 +10,10 @@ export function interceptor(params, headers) {
 // 配置 
 export function network(options) {
   if (options.method == "POST") {
-    options.data = options.params;
+    options.body = JSON.stringify(options.params);
     delete options.params;
   }
 
-  return new Promise((resolve, reject) => {
-    fetch(options.url, options)
-      .then((res) => res.json())
-      .then((res) => {
-        resolve(res);
-      })
-      .catch((err) => {
-        reject(err);
-      });
-  });
+  return fetch(options.url, options)
+  .then((res) => res.json());
 }

@@ -30,7 +30,7 @@ const loading = ref(false); //
 const imgs = [null, null]; //
 let userCity = [];
 let cardCity = [];
-let pageParams = { code: "123456", id: "123456" };
+let pageParams = { code: "846893", id: "1771791214584680477" };
 
 const guide =
   "本人承诺以上信息全部真实且有效。同时，本人授权公司对我所填写的信息进行核实。如有虚假，本人愿接受公司规则制度处理，包括但不限于与本人解除劳动关系。";
@@ -43,7 +43,7 @@ onMounted(() => {
     showToast("分享码错误");
     // return;
   } else {
-    const codes = params.code.split("I")[0];
+    const codes = params.code.split("I");
     pageParams.id = codes[0];
     pageParams.code = codes[1];
   }
@@ -152,6 +152,7 @@ async function onSubmit() {
   let imgObj = {};
   let img2Obj = {};
   const res1 = await uploadImg(imgs[0], fileParams);
+  console.log(res1)
   if (res1.code == "1") {
     imgObj = res1.data;
   } else {
@@ -196,7 +197,7 @@ async function onSubmit() {
 
   loading.value = false;
 
-  if (res3.code == 0) {
+  if (res3.code == '1') {
     console.log("提交成功");
     showToast("提交成功");
   } else {
@@ -210,7 +211,7 @@ async function onSubmit() {
 
 <template>
   <div class="re-page">
-    <!-- <span class="re-title">PKL入职申请</span> -->
+    <span class="re-title">PKL入职申请</span>
     <div class="re-box">
       <div class="re-input-item">
         <span class="re-input-item-label">姓名</span>

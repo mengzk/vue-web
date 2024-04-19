@@ -16,11 +16,8 @@ export function upload({ file, url='', params = {} } = {}) {
     fetch(url3, { method: "POST", body: formData })
       .then((res) => res.json())
       .then((res) => {
-        if(res.status === 200||res.status === 201){
-          resolve(res.data);
-        }else {
-          resolve({code: res.status, msg: res.statusText});
-        }
+        // console.log(res)
+        resolve(res);
       })
       .catch((err) => {
         reject(err);
