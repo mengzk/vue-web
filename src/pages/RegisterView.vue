@@ -4,7 +4,8 @@ import { Cascader, Popup, showLoadingToast, showToast } from "vant";
 import { useCascaderAreaData } from "@vant/area-data";
 
 import { openChooseFile } from "../modules/system/index";
-import { submitApply, uploadImg } from "../modules//api/index";
+import { submitApply, uploadImg } from "../modules/api/index";
+import { getUrlParams } from "../utils/index";
 
 import shen_zm from "@/assets/shen_zm.png";
 import shen_fm from "@/assets/shen_fm.png";
@@ -23,13 +24,29 @@ const cardAds = ref(""); //
 const cardAdsInfo = ref(""); //
 const img1 = ref(shen_zm); //
 const img2 = ref(shen_fm); //
-const imgs = [null, null]; //
 const agree = ref(true); //
+
+const imgs = [null, null]; //
+let userCity = [];
+let cardCity = [];
+let pageParams = {code: '',id:''};
 
 const guide =
   "本人承诺以上信息全部真实且有效。同时，本人授权公司对我所填写的信息进行核实。如有虚假，本人愿接受公司规则制度处理，包括但不限于与本人解除劳动关系。";
 
 onMounted(() => {
+  const params = getUrlParams();
+  // console.log('------->params', params)
+  if(params.code == null) {
+    console.log("分享码错误");
+    showToast("分享码错误");
+    return;
+  }else {
+    const codes = params.code.split('I')[0];
+    pageParams.id = codes[0];
+    pageParams.code = codes[1];
+  }
+  
   const group = document.getElementById("radio-group");
   group.addEventListener("change", (e) => {
     const target = e.target;
@@ -74,14 +91,46 @@ function onCardAddress() {
   showPopup.value = true;
 }
 // 地址选择
-function onAreaConfirm(value) {
-  console.log("onConfirm", value);
+function onAreaConfirm(res) {
+  console.log("onConfirm", res);
   showPopup.value = false;
+  const list = res.selectedOptions||[];
+  if(areaTag == 0) {
+    userCity = list;
+    userAds.value = list.map((item) => item.text).join("/");
+  }else {
+    cardCity = list;
+    cardAds.value = list.map((item) => item.text).join("/");
+  }
 }
 
 async function onSubmit() {
   console.log("submit", userSex.value, agree.value);
-  if (imgs.filter((item) => item == null).length > 1) {
+  if(userName.value == "") {
+    console.log("请输入姓名");
+    showToast("请输入姓名");
+    return;
+  } else if(userPhone.value == "") {
+    console.log("请输入手机号");
+    showToast("请输入手机号");
+    return;
+  } else if(userAds.value == "") {
+    console.log("请选择常住地址");
+    showToast("请选择常住地址");
+    return;
+  } else if(userAdsInfo.value == "") {
+    console.log("请输入详细地址");
+    showToast("请输入详细地址");
+    return;
+  } else if(cardAds.value == "") {
+    console.log("请选择身份证地址");
+    showToast("请选择身份证地址");
+    return;
+  } else if(cardAdsInfo.value == "") {
+    console.log("请输入详细地址");
+    showToast("请输入详细地址");
+    return;
+  } else if (imgs.filter((item) => item == null).length > 1) {
     console.log("请上传图片");
     showToast("请上传图片");
     return;
@@ -92,35 +141,56 @@ async function onSubmit() {
   }
 
   showLoadingToast("提交中...");
+  let imgObj = {};
+  let img2Obj = {};
   const res1 = await uploadImg(imgs[0]);
+  if(res1.code == '1') {
+    imgObj = res1.data;
+  } else {
+    showToast("上传图片失败");
+    return;
+  }
   const res2 = await uploadImg(imgs[1]);
+  if(res2.code == '1') {
+    img2Obj = res2.data;
+  } else {
+    showToast("上传图片失败");
+    return;
+  }
+
 
   const res3 = await submitApply({
-    backIdentityCardFileKey: "",
-    backIdentityCardFileUrl: "",
-    cityCode: "",
-    cityName: "",
-    districtCode: "",
-    districtName: "",
-    frontIdentityCardFileKey: "",
-    frontIdentityCardFileUrl: "",
+    backIdentityCardFileKey: imgObj.fileKey,
+    backIdentityCardFileUrl: imgObj.fileUrl,
+    frontIdentityCardFileKey: img2Obj.fileKey,
+    frontIdentityCardFileUrl: img2Obj.fileUrl,
+    provinceCode: userCity[0].value,
+    provinceName: userCity[0].text,
+    cityCode:  userCity[1].value,
+    cityName:  userCity[1].text,
+    districtCode: userCity[2].value||'',
+    districtName: userCity[2].text||'',
+    resideAddress: userAdsInfo.value,
+    idCardCityCode: cardCity[1].value,
+    idCardCityName: cardCity[1].value,
+    idCardDistrictCode: cardCity[2].value||'',
+    idCardDistrictName: cardCity[2].value||'',
+    idCardProvinceCode: cardCity[0].value,
+    idCardProvinceName: cardCity[0].value,
+    idCardAddress: cardAdsInfo.value,
+    inviteVerificationCode: pageParams.code,
+    inviterId: pageParams.id,
+    mobile: userPhone.value,
     gender: userSex.value,
-    idCardAddress: "",
-    idCardCityCode: "",
-    idCardCityName: "",
-    idCardDistrictCode: "",
-    idCardDistrictName: "",
-    idCardProvinceCode: "",
-    idCardProvinceName: "",
-    inviteVerificationCode: "",
-    inviterId: "",
-    mobile: "",
-    provinceCode: "",
-    provinceName: "",
-    resideAddress: "",
-    userName: "",
+    userName: userName.value,
   });
-
+  if(res3.code == 0) {
+    console.log("提交成功");
+    showToast("提交成功");
+  } else {
+    console.log("提交失败");
+    showToast("提交失败");
+  }
   // showLoadingToast().close();
 }
 </script>

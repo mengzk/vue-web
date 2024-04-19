@@ -16,25 +16,25 @@ export function request({ url, method = "GET", params = {}, headers = {} }={}) {
     // 请求头及参数处理
     options.headers = interceptor(options.params, options.headers);
     // 显示加载中
-    showLoading(true);
+    onShowLoading(true);
 
     network(options)
       .then((res) => {
         // 隐藏加载中
-        showLoading(false);
+        onShowLoading(false);
         const { code, data, message } = parseData(res, url);
         if (code == 200) {
           resolve(data);
         } else {
-          showToast(message);
+          onShowToast(message);
           reject({ code, message });
         }
       })
       .catch((err) => {
         // 隐藏加载中
-        showLoading(false);
+        onShowLoading(false);
         const { code, message } = parseError(err, url);
-        showToast(message);
+        onShowToast(message);
         reject({ code, message });
       });
   });
@@ -99,7 +99,7 @@ function parseError(res, url) {
 }
 
 // 显示toast
-function showToast(msg) {
+function onShowToast(msg) {
   // console.log(msg)
   if (msg) {
     showToast(msg);
@@ -107,7 +107,7 @@ function showToast(msg) {
 }
 
 // 显示加载中
-function showLoading(loading, msg) {
+function onShowLoading(loading, msg) {
   // console.log(loading, text);
   if(loading) {
     showLoadingToast({
