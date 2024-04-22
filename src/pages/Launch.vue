@@ -61,8 +61,8 @@ function main() {
     const x = (res.pageX - point.x) / 100;
     const y = (res.pageY - point.y) / 100;
     point = { x: res.pageX, y: res.pageY };
-    cube.rotation.x += x;
-    cube.rotation.y += y;
+    cube.rotation.x += y;
+    cube.rotation.y += x;
 
     renderer.render(scene, camera);
     // console.log('x:', x, 'y:', y)
