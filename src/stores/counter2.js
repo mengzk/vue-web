@@ -12,7 +12,7 @@
  */
 import { defineStore } from "pinia";
 
-export const useCounterStore = defineStore('counter', {
+export const useCounterStore2 = defineStore('counter', {
   state: () => ({ count: 0 }),
   getters: {
     double: (state) => state.count * 2,
