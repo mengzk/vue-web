@@ -44,9 +44,21 @@ const router = createRouter({
     },
     {
       path: "/about",
-      name: "about",
+      name: "About",
       meta: { transition: 'slide-left' },
       component: () => import("./pages/AboutView.vue"),
+    },
+    {
+      path: "/login",
+      name: "Login",
+      meta: { transition: 'slide-left' },
+      component: () => import("./pages/LoginView.vue"),
+    },
+    {
+      path: "/notfound",
+      name: "Notfound",
+      meta: { transition: 'slide-left' },
+      component: () => import("./pages/NotfoundView.vue"),
     },
   ],
 });
