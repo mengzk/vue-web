@@ -17,7 +17,7 @@ import LaunchView from "./pages/LaunchView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
-  scrollBehavior (to, from, savedPosition) {
+  scrollBehavior(to, from, savedPosition) {
     // return 期望滚动到哪个的位置
     // 返回 savedPosition，在按下 后退/前进 按钮时，就会像浏览器的原生表现那样
     if (savedPosition) {
@@ -33,31 +33,68 @@ const router = createRouter({
     {
       path: "/",
       name: "launch",
-      meta: { transition: 'slide-left' },
+      meta: { transition: "slide-left" },
       component: LaunchView,
     },
     {
       path: "/home",
       name: "home",
-      meta: { transition: 'slide-left' },
+      meta: { transition: "slide-left" },
       component: () => import("./pages/HomeView.vue"),
     },
-    {
-      path: "/about",
-      name: "About",
-      meta: { transition: 'slide-left' },
-      component: () => import("./pages/AboutView.vue"),
-    },
+
     {
       path: "/login",
       name: "Login",
-      meta: { transition: 'slide-left' },
+      meta: { transition: "slide-left" },
       component: () => import("./pages/LoginView.vue"),
+    },
+    {
+      path: "/workbench",
+      name: "Workbench",
+      redirect: "",
+      meta: { transition: "slide-left" },
+      component: () => import("./pages/menu/Workbench.vue"),
+      children: [
+        {
+          path: "about",
+          name: "About",
+          meta: { transition: "slide-left" },
+          component: () => import("./pages/menu/AboutView.vue"),
+        },
+        {
+          path: "user",
+          name: "User",
+          meta: { transition: "slide-left" },
+          component: () => import("./pages/menu/UserView.vue"),
+        },
+      ],
+    },
+    {
+      path: "/worktab",
+      name: "WorkTab",
+      redirect: "",
+      meta: { transition: "slide-left" },
+      component: () => import("./pages/tab/Workbench.vue"),
+      children: [
+        {
+          path: "about",
+          name: "About",
+          meta: { transition: "slide-left" },
+          component: () => import("./pages/tab/AboutView.vue"),
+        },
+        {
+          path: "user",
+          name: "User",
+          meta: { transition: "slide-left" },
+          component: () => import("./pages/tab/UserView.vue"),
+        },
+      ],
     },
     {
       path: "/notfound",
       name: "Notfound",
-      meta: { transition: 'slide-left' },
+      meta: { transition: "slide-left" },
       component: () => import("./pages/NotfoundView.vue"),
     },
   ],
@@ -92,7 +129,7 @@ router.beforeResolve(async (to, from) => {
 // 注册全局后置钩子，然而和守卫不同的是，这些钩子不会接受 next 函数也不会改变导航本身
 // 对于分析、更改页面标题、声明页面等辅助功能以及许多其他事情都很有用。
 router.afterEach((to, from) => {
-  to.meta.transition = 'slide-left';
+  to.meta.transition = "slide-left";
 });
 
 export default router;

@@ -34,6 +34,7 @@
 .home {
   height: 100vh;
   display: flex;
+  flex-direction: column;
   position: relative;
   /* background-color: rgba(0, 0, 0, 0.8); */
 }
@@ -45,6 +46,7 @@
 
 .home-grid {
   display: grid;
+  grid-template-columns: repeat(4, 1fr);
 }
 
 </style>
