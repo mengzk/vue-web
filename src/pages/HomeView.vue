@@ -27,6 +27,8 @@
     <div class="home-grid">
       <div class="home-item" @click="handleClick">Login {{ count }}</div>
       <div class="home-item" @click="handleClick2">Notfound</div>
+
+      <div class="home-box"></div>
     </div>
   </div>
 </template>
@@ -47,6 +49,12 @@
 .home-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
+}
+
+.home-box {
+  width: 100px;
+  height: 200px;
+  background-color: antiquewhite;
 }
 
 </style>
