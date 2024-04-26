@@ -57,10 +57,10 @@ function onMenuClick(menu) {
 }
 .tools-menu {
   width: 317px;
-  padding: 0 24px;
+  padding: 39px 24px;
   display: flex;
   flex-direction: column;
-  background-color: antiquewhite;
+  background-color: white;
 }
 .menu-grid {
   display: grid;
