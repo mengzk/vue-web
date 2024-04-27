@@ -211,7 +211,7 @@ async function onSubmit() {
 
 <template>
   <div class="re-page">
-    <span class="re-title">PKL入职申请</span>
+    <!-- <span class="re-title">PKL入职申请</span> -->
     <div class="re-box">
       <div class="re-input-item">
         <span class="re-input-item-label">姓名</span>
