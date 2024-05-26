@@ -30,16 +30,15 @@ const loading = ref(false); //
 const imgs = [null, null]; //
 let userCity = [];
 let cardCity = [];
-let pageParams = { code: "846893", id: "1771791214584680477" };
+let pageParams = { code: "", id: "" };
 
 const guide =
   "本人承诺以上信息全部真实且有效。同时，本人授权公司对我所填写的信息进行核实。如有虚假，本人愿接受公司规则制度处理，包括但不限于与本人解除劳动关系。";
 
 onMounted(() => {
   const params = getUrlParams();
-  // console.log('------->params', params)
+  console.log('------->params', params)
   if (params.code == null) {
-    console.log("分享码错误");
     showToast("分享码错误");
     // return;
   } else {
@@ -76,7 +75,7 @@ function onChooseImg(tag) {
 
 function onChangeAgree(e) {
   const target = e.target;
-  console.log("onChangeAgree", target.checked);
+  // console.log("onChangeAgree", target.checked);
   agree.value = target.checked;
 }
 
@@ -93,7 +92,7 @@ function onCardAddress() {
 }
 // 地址选择
 function onAreaConfirm(res) {
-  console.log("onConfirm", res);
+  // console.log("onConfirm", res);
   showPopup.value = false;
   const list = res.selectedOptions || [];
   if (areaTag == 0) {
@@ -106,37 +105,28 @@ function onAreaConfirm(res) {
 }
 
 async function onSubmit() {
-  console.log("submit", userSex.value, agree.value);
   if (userName.value == "") {
-    console.log("请输入姓名");
     showToast("请输入姓名");
     return;
   } else if (userPhone.value == "") {
-    console.log("请输入手机号");
     showToast("请输入手机号");
     return;
   } else if (userAds.value == "") {
-    console.log("请选择常住地址");
     showToast("请选择常住地址");
     return;
   } else if (userAdsInfo.value == "") {
-    console.log("请输入详细地址");
     showToast("请输入详细地址");
     return;
   } else if (cardAds.value == "") {
-    console.log("请选择身份证地址");
     showToast("请选择身份证地址");
     return;
   } else if (cardAdsInfo.value == "") {
-    console.log("请输入详细地址");
     showToast("请输入详细地址");
     return;
   } else if (imgs.filter((item) => item == null).length > 1) {
-    console.log("请上传图片");
     showToast("请上传图片");
     return;
   } else if (!agree.value) {
-    console.log("请勾选同意协议");
     showToast("请勾选同意协议");
     return;
   }
@@ -156,7 +146,7 @@ async function onSubmit() {
   if (res1.code == "1") {
     imgObj = res1.data;
   } else {
-    showToast("上传图片失败");
+    showToast(res1.returnMsg || "上传图片失败");
     loading.value = false;
     return;
   }
@@ -164,7 +154,7 @@ async function onSubmit() {
   if (res2.code == "1") {
     img2Obj = res2.data;
   } else {
-    showToast("上传图片失败");
+    showToast(res2.returnMsg || "上传图片失败");
     loading.value = false;
     return;
   }
@@ -198,14 +188,11 @@ async function onSubmit() {
   loading.value = false;
 
   if (res3.code == '1') {
-    console.log("提交成功");
     showToast("提交成功");
   } else {
-    console.log("提交失败");
-    showToast("提交失败");
+    showToast(res3.returnMsg || "提交失败");
   }
-
-  // showLoadingToast().close();
+  showLoadingToast().close();
 }
 </script>
 
@@ -228,6 +215,7 @@ async function onSubmit() {
           class="re-input-item-input"
           v-model="userPhone"
           type="number"
+          maxlength="11"
           placeholder="请输入"
         />
       </div>

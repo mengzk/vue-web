@@ -50,8 +50,9 @@ function parseData(res, url) {
     code = data.code;
     msg = data.statusText || data.data;
     data = data.data;
+  }else {
+    msg = data.returnMsg || data.data;
   }
-
   return { code, data, msg: "" };
 }
 
