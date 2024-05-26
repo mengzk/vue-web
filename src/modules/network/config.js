@@ -1,7 +1,6 @@
 
 // 请求头及参数处理
 export function interceptor(params, headers) {
-  let token = "9AZMBYfKQdyaJzQ";
   headers['Content-Type'] = "application/json";
   // headers.token = token;
   return { params, headers };

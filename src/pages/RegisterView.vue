@@ -1,27 +1,46 @@
 <script setup>
 import { ref, onMounted } from "vue";
+import { useRouter } from 'vue-router'
 import { Cascader, Popup, showLoadingToast, showToast } from "vant";
-import { useCascaderAreaData } from "@vant/area-data";
 
+import ChooseGroup from "@/components/ChooseGroup.vue";
 import { openChooseFile } from "../modules/system/index";
-import { submitApply, uploadImg } from "../modules/api/index";
+import {
+  submitApply,
+  uploadImg,
+  queryGroupTree,
+  queryOfficeLocation,
+  queryRole,
+  queryStaff,
+  getAreaConfig,
+} from "../modules/api/index";
 import { getUrlParams } from "../utils/index";
 
 import shen_zm from "@/assets/shen_zm.png";
 import shen_fm from "@/assets/shen_fm.png";
 import right from "@/assets/re_right.png";
 
+const router = useRouter();
+
 let areaTag = 0;
-const showPopup = ref(false);
-const options = useCascaderAreaData();
+const showCityPopup = ref(false);
+const showGroup = ref(false);
+const showRole = ref(false);
+const showOffice = ref(false);
 
 const userName = ref(""); //
 const userPhone = ref(""); //
+const userIdCode = ref(""); //
 const userSex = ref(1); //
 const userAds = ref(""); //
 const userAdsInfo = ref(""); //
 const cardAds = ref(""); //
 const cardAdsInfo = ref(""); //
+const groupDao = ref({});
+const roleDao = ref({});
+const leaderDao = ref({});
+const officeDao = ref({});
+
 const img1 = ref(shen_zm); //
 const img2 = ref(shen_fm); //
 const agree = ref(true); //
@@ -30,6 +49,26 @@ const loading = ref(false); //
 const imgs = [null, null]; //
 let userCity = [];
 let cardCity = [];
+
+let officeList = [];
+let roleList = [];
+let groupList = [];
+let cityList = [];
+const roleNames = {
+  text: "enumName",
+  value: "enumCode",
+  // children: "children",
+};
+const officeNames = {
+  text: "officeLocationName",
+  value: "officeLocationId",
+  // children: "children",
+};
+const cityNames = {
+  text: "name",
+  value: "code",
+  children: "children",
+};
 let pageParams = { code: "", id: "" };
 
 const guide =
@@ -37,7 +76,7 @@ const guide =
 
 onMounted(() => {
   const params = getUrlParams();
-  console.log('------->params', params)
+  console.log("------->params", params);
   if (params.code == null) {
     showToast("分享码错误");
     // return;
@@ -54,6 +93,11 @@ onMounted(() => {
       userSex.value = parseInt(target.id);
     }
   });
+  getGroupList();
+  getRoleList();
+  getLeaderInfo();
+  getOfficeList();
+  areaConfig();
 });
 
 function onChooseImg(tag) {
@@ -82,29 +126,62 @@ function onChangeAgree(e) {
 // 常住地址
 function onUserAddress() {
   areaTag = 0;
-  showPopup.value = true;
+  showCityPopup.value = true;
 }
 
 // 身份证地址
 function onCardAddress() {
   areaTag = 1;
-  showPopup.value = true;
+  showCityPopup.value = true;
+}
+//
+function onChooseGroup() {
+  showGroup.value = true;
+}
+//
+function onChooseRole() {
+  showRole.value = true;
+}
+//
+function onChooseOffice() {
+  showOffice.value = true;
 }
 // 地址选择
 function onAreaConfirm(res) {
   // console.log("onConfirm", res);
-  showPopup.value = false;
+  showCityPopup.value = false;
   const list = res.selectedOptions || [];
   if (areaTag == 0) {
     userCity = list;
-    userAds.value = list.map((item) => item.text).join("/");
+    userAds.value = list.map((item) => item.name).join("/");
   } else {
     cardCity = list;
-    cardAds.value = list.map((item) => item.text).join("/");
+    cardAds.value = list.map((item) => item.name).join("/");
   }
 }
 
+function onChangeRole(e) {
+  console.log("onChangeRole", e);
+  roleDao.value = e.selectedOptions[0];
+  showRole.value = false;
+}
+
+function onChangeOffice(e) {
+  console.log("onChangeOffice", e);
+  officeDao.value = e.selectedOptions[0];
+  showOffice.value = false;
+}
+
+function onChangeGroup(res) {
+  console.log("onGroupConfirm", res);
+  if (res) {
+    groupDao.value = res;
+  }
+  showGroup.value = false;
+}
+
 async function onSubmit() {
+  showLoadingToast().close();
   if (userName.value == "") {
     showToast("请输入姓名");
     return;
@@ -142,7 +219,7 @@ async function onSubmit() {
   let imgObj = {};
   let img2Obj = {};
   const res1 = await uploadImg(imgs[0], fileParams);
-  console.log(res1)
+  console.log(res1);
   if (res1.code == "1") {
     imgObj = res1.data;
   } else {
@@ -151,6 +228,7 @@ async function onSubmit() {
     return;
   }
   const res2 = await uploadImg(imgs[1], fileParams);
+  console.log(res2);
   if (res2.code == "1") {
     img2Obj = res2.data;
   } else {
@@ -164,35 +242,91 @@ async function onSubmit() {
     backIdentityCardFileUrl: imgObj.fileUrl,
     frontIdentityCardFileKey: img2Obj.fileKey,
     frontIdentityCardFileUrl: img2Obj.fileUrl,
-    provinceCode: userCity[0].value,
-    provinceName: userCity[0].text,
-    cityCode: userCity[1].value,
-    cityName: userCity[1].text,
-    districtCode: userCity[2].value || "",
-    districtName: userCity[2].text || "",
+    provinceCode: userCity[0].code,
+    provinceName: userCity[0].name,
+    cityCode: userCity[1].code,
+    cityName: userCity[1].name,
+    districtCode: userCity[2].code || "",
+    districtName: userCity[2].name || "",
     resideAddress: userAdsInfo.value,
-    idCardCityCode: cardCity[1].value,
-    idCardCityName: cardCity[1].text,
-    idCardDistrictCode: cardCity[2].value || "",
-    idCardDistrictName: cardCity[2].text || "",
-    idCardProvinceCode: cardCity[0].value,
-    idCardProvinceName: cardCity[0].text,
+    idCardCityCode: cardCity[1].code,
+    idCardCityName: cardCity[1].name,
+    idCardDistrictCode: cardCity[2].code || "",
+    idCardDistrictName: cardCity[2].name || "",
+    idCardProvinceCode: cardCity[0].code,
+    idCardProvinceName: cardCity[0].name,
     idCardAddress: cardAdsInfo.value,
     inviteVerificationCode: pageParams.code,
     inviterId: pageParams.id,
     mobile: userPhone.value,
     gender: userSex.value,
     userName: userName.value,
+    idCardNumber: userIdCode.value,
+    organizationId: groupDao.value.id,
+    organizationCode: groupDao.value.organizationCode,
+    organizationName: groupDao.value.name,
+    directSuperiorId: leaderDao.value.userId,
+    directSuperiorCode: leaderDao.value.userCode,
+    directSuperiorName: leaderDao.value.userName,
+    officeLocationId: officeDao.value.officeLocationId,
+    officeLocationName: officeDao.value.officeLocationName,
+    officeLocationCode: officeDao.value.officeLocationCode,
+    jobPositionCodes: [roleDao.value.enumCode],
   });
 
   loading.value = false;
-
-  if (res3.code == '1') {
+  showLoadingToast().close();
+  if (res3.code == "1") {
     showToast("提交成功");
+    router.replace("/succeed");
   } else {
     showToast(res3.returnMsg || "提交失败");
   }
-  showLoadingToast().close();
+}
+
+async function getGroupList() {
+  const res = await queryGroupTree();
+  if (res.code == "1") {
+    groupList = (res.data || {}).children || [];
+  }
+}
+
+async function getRoleList() {
+  const res = await queryRole();
+  if (res.code == "1") {
+    roleList = (res.data||[]).filter(e => _filter(e.enumCode));
+  }
+}
+
+function _filter(code) {
+    switch (code) {
+      case 'PARTNER':
+      case 'SERVICE_CENTER':
+        return false;
+      default:
+        return true;
+    }
+  }
+
+async function getLeaderInfo() {
+  const res = await queryStaff(pageParams.id);
+  if (res.code == "1") {
+    leaderDao.value = res.data;
+  }
+}
+
+async function getOfficeList() {
+  const res = await queryOfficeLocation();
+  if (res.code == "1") {
+    officeList = res.data.records || [];
+  }
+}
+
+async function areaConfig() {
+  const res = await getAreaConfig();
+  if (res.code == "1") {
+    cityList = res.data || [];
+  }
 }
 </script>
 
@@ -216,6 +350,15 @@ async function onSubmit() {
           v-model="userPhone"
           type="number"
           maxlength="11"
+          placeholder="请输入"
+        />
+      </div>
+      <div class="re-input-item">
+        <span class="re-input-item-label">身份证号</span>
+        <input
+          class="re-input-item-input"
+          v-model="userIdCode"
+          maxlength="18"
           placeholder="请输入"
         />
       </div>
@@ -258,6 +401,41 @@ async function onSubmit() {
           placeholder="街道、楼牌号等"
         />
       </div>
+
+      <div class="re-input-item" @click="onChooseGroup">
+        <span class="re-input-item-label">部门</span>
+        <span class="re-input-item-input">{{ groupDao.name || "请选择" }}</span>
+        <img class="re-item-icon" :src="right" />
+      </div>
+
+      <div class="re-input-item" @click="onChooseRole">
+        <span class="re-input-item-label">职位</span>
+        <span class="re-input-item-input">{{
+          roleDao.enumName || "请选择"
+        }}</span>
+        <img class="re-item-icon" :src="right" />
+      </div>
+
+      <div class="re-input-item" @click="onChooseOffice">
+        <span class="re-input-item-label">办公地址</span>
+        <span class="re-input-item-input">{{
+          officeDao.officeLocationName || "请选择"
+        }}</span>
+        <img class="re-item-icon" :src="right" />
+      </div>
+      <div class="re-input-item">
+        <span class="re-input-item-label">详细地址</span>
+        <span class="re-input-item-input">{{
+          officeDao.detailedAddress || "-"
+        }}</span>
+      </div>
+
+      <div class="re-input-item">
+        <span class="re-input-item-label">直属上级</span>
+        <span class="re-input-item-input">{{ leaderDao.userName }}</span>
+        <!-- <img class="re-item-icon" :src="right" /> -->
+      </div>
+
       <div class="div-line"></div>
       <div class="re-attch-item">
         <span class="re-attch-label">附件资料</span>
@@ -278,14 +456,45 @@ async function onSubmit() {
         <span class="re-hint-text">{{ guide }}</span>
       </div>
     </div>
-    <input id="v-ar-upload-input" hidden />
+
     <div class="re-btn-box">
       <button :disabled="loading" @click="onSubmit">提 交</button>
     </div>
 
-    <Popup v-model:show="showPopup" round position="bottom">
-      <Cascader title="地址选择" :options="options" @finish="onAreaConfirm" />
+    <Popup v-model:show="showCityPopup" round position="bottom">
+      <Cascader
+        title="地址选择"
+        :options="cityList"
+        :field-names="cityNames"
+        @finish="onAreaConfirm"
+      />
     </Popup>
+
+    <Popup v-model:show="showRole" round position="bottom">
+      <Cascader
+        title="职位选择"
+        :options="roleList"
+        :field-names="roleNames"
+        @close="showRole = false"
+        @change="onChangeRole"
+      />
+    </Popup>
+
+    <Popup v-model:show="showOffice" round position="bottom">
+      <Cascader
+        title="办公地址选择"
+        :options="officeList"
+        :field-names="officeNames"
+        @close="showOffice = false"
+        @change="onChangeOffice"
+      />
+    </Popup>
+
+    <ChooseGroup
+      v-model:show="showGroup"
+      :list="groupList"
+      @change="onChangeGroup"
+    />
   </div>
 </template>
 
@@ -327,6 +536,7 @@ async function onSubmit() {
   font-size: 14px;
   line-height: 20px;
   border: none;
+  text-align: right;
 }
 .re-input-not {
   color: #b2b8c4;
