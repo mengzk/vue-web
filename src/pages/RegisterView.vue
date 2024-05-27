@@ -200,6 +200,15 @@ async function onSubmit() {
   } else if (cardAdsInfo.value == "") {
     showToast("请输入详细地址");
     return;
+  } else if (groupDao.value.officeLocationId == '') {
+    showToast("请选择组织");
+    return;
+  } else if (roleDao.value.enumCode == '') {
+    showToast("请选择职位");
+    return;
+  } else if (officeDao.value.officeLocationId == '') {
+    showToast("请选择办公地址");
+    return;
   } else if (imgs.filter((item) => item == null).length > 1) {
     showToast("请上传图片");
     return;
