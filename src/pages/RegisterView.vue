@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted } from "vue";
-import { useRouter } from 'vue-router'
-import { Cascader, Popup, showLoadingToast, showToast } from "vant";
+import { useRouter } from "vue-router";
+import { Cascader, Button, Popup, showLoadingToast, showToast } from "vant";
 
 import ChooseGroup from "@/components/ChooseGroup.vue";
 import { openChooseFile } from "../modules/system/index";
@@ -85,6 +85,9 @@ onMounted(() => {
     pageParams.id = codes[0];
     pageParams.code = codes[1];
   }
+  if (params.phone) {
+    userPhone.value = params.phone;
+  }
 
   const group = document.getElementById("radio-group");
   group.addEventListener("change", (e) => {
@@ -99,6 +102,20 @@ onMounted(() => {
   getOfficeList();
   areaConfig();
 });
+
+function onChangePhone(e) {
+  const text = e.target.value;
+  if (text.length > 11) {
+    userPhone.value = text.slice(0, 11);
+  }
+}
+
+function onChangeIdNo(e) {
+  const text = e.target.value;
+  if (text.length > 18) {
+    userIdCode.value = text.slice(0, 11);
+  }
+}
 
 function onChooseImg(tag) {
   // console.log('onChooseImg', tag)
@@ -180,6 +197,22 @@ function onChangeGroup(res) {
   showGroup.value = false;
 }
 
+function canCommit() {
+  return (
+    !userName.value 
+    || !userPhone.value 
+    || !userIdCode.value 
+    || !userAds.value 
+    || !userAdsInfo.value
+    || !cardAds.value
+    || !cardAdsInfo.value
+    || !groupDao.value.id
+    || !roleDao.value.enumCode
+    || !officeDao.value.officeLocationId
+    || imgs.filter((item) => item == null).length > 1
+  );
+}
+
 async function onSubmit() {
   showLoadingToast().close();
   if (userName.value == "") {
@@ -187,6 +220,9 @@ async function onSubmit() {
     return;
   } else if (userPhone.value == "") {
     showToast("请输入手机号");
+    return;
+  } else if (userIdCode.value == "") {
+    showToast("请输入身份证号");
     return;
   } else if (userAds.value == "") {
     showToast("请选择常住地址");
@@ -200,13 +236,13 @@ async function onSubmit() {
   } else if (cardAdsInfo.value == "") {
     showToast("请输入详细地址");
     return;
-  } else if (groupDao.value.officeLocationId == '') {
+  } else if (!groupDao.value.id) {
     showToast("请选择组织");
     return;
-  } else if (roleDao.value.enumCode == '') {
+  } else if (!roleDao.value.enumCode) {
     showToast("请选择职位");
     return;
-  } else if (officeDao.value.officeLocationId == '') {
+  } else if (!officeDao.value.officeLocationId) {
     showToast("请选择办公地址");
     return;
   } else if (imgs.filter((item) => item == null).length > 1) {
@@ -303,19 +339,19 @@ async function getGroupList() {
 async function getRoleList() {
   const res = await queryRole();
   if (res.code == "1") {
-    roleList = (res.data||[]).filter(e => _filter(e.enumCode));
+    roleList = (res.data || []).filter((e) => _filter(e.enumCode));
   }
 }
 
 function _filter(code) {
-    switch (code) {
-      case 'PARTNER':
-      case 'SERVICE_CENTER':
-        return false;
-      default:
-        return true;
-    }
+  switch (code) {
+    case "PARTNER":
+    case "SERVICE_CENTER":
+      return false;
+    default:
+      return true;
   }
+}
 
 async function getLeaderInfo() {
   const res = await queryStaff(pageParams.id);
@@ -344,7 +380,10 @@ async function areaConfig() {
     <!-- <span class="re-title">PKL入职申请</span> -->
     <div class="re-box">
       <div class="re-input-item">
-        <span class="re-input-item-label">姓名</span>
+        <span class="re-input-item-label"
+          >姓名<span class="re-input-item-star">*</span></span
+        >
+
         <input
           class="re-input-item-input"
           v-model="userName"
@@ -353,17 +392,22 @@ async function areaConfig() {
         />
       </div>
       <div class="re-input-item">
-        <span class="re-input-item-label">手机号</span>
+        <span class="re-input-item-label"
+          >手机号<span class="re-input-item-star">*</span></span
+        >
         <input
           class="re-input-item-input"
           v-model="userPhone"
           type="number"
           maxlength="11"
           placeholder="请输入"
+          @input="onChangePhone"
         />
       </div>
       <div class="re-input-item">
-        <span class="re-input-item-label">身份证号</span>
+        <span class="re-input-item-label"
+          >身份证号<span class="re-input-item-star">*</span></span
+        >
         <input
           class="re-input-item-input"
           v-model="userIdCode"
@@ -383,12 +427,16 @@ async function areaConfig() {
         </div>
       </div>
       <div class="re-input-item" @click="onUserAddress">
-        <span class="re-input-item-label">常住地址</span>
+        <span class="re-input-item-label"
+          >常住地址<span class="re-input-item-star">*</span></span
+        >
         <span class="re-input-item-input">{{ userAds || "省、市、区" }}</span>
         <img class="re-item-icon" :src="right" />
       </div>
       <div class="re-input-item">
-        <span class="re-input-item-label">详细地址</span>
+        <span class="re-input-item-label"
+          >详细地址<span class="re-input-item-star">*</span></span
+        >
         <input
           class="re-input-item-input"
           type="text"
@@ -397,12 +445,16 @@ async function areaConfig() {
         />
       </div>
       <div class="re-input-item" @click="onCardAddress">
-        <span class="re-input-item-label">身份证地址</span>
+        <span class="re-input-item-label"
+          >身份证地址<span class="re-input-item-star">*</span></span
+        >
         <span class="re-input-item-input">{{ cardAds || "省、市、区" }}</span>
         <img class="re-item-icon" :src="right" />
       </div>
       <div class="re-input-item">
-        <span class="re-input-item-label">详细地址</span>
+        <span class="re-input-item-label"
+          >详细地址<span class="re-input-item-star">*</span></span
+        >
         <input
           class="re-input-item-input"
           type="text"
@@ -412,13 +464,17 @@ async function areaConfig() {
       </div>
 
       <div class="re-input-item" @click="onChooseGroup">
-        <span class="re-input-item-label">部门</span>
+        <span class="re-input-item-label"
+          >部门<span class="re-input-item-star">*</span></span
+        >
         <span class="re-input-item-input">{{ groupDao.name || "请选择" }}</span>
         <img class="re-item-icon" :src="right" />
       </div>
 
       <div class="re-input-item" @click="onChooseRole">
-        <span class="re-input-item-label">职位</span>
+        <span class="re-input-item-label"
+          >职位<span class="re-input-item-star">*</span></span
+        >
         <span class="re-input-item-input">{{
           roleDao.enumName || "请选择"
         }}</span>
@@ -426,28 +482,36 @@ async function areaConfig() {
       </div>
 
       <div class="re-input-item" @click="onChooseOffice">
-        <span class="re-input-item-label">办公地址</span>
+        <span class="re-input-item-label"
+          >办公地址<span class="re-input-item-star">*</span></span
+        >
         <span class="re-input-item-input">{{
           officeDao.officeLocationName || "请选择"
         }}</span>
         <img class="re-item-icon" :src="right" />
       </div>
       <div class="re-input-item">
-        <span class="re-input-item-label">详细地址</span>
+        <span class="re-input-item-label"
+          >详细地址<span class="re-input-item-star">*</span></span
+        >
         <span class="re-input-item-input">{{
           officeDao.detailedAddress || "-"
         }}</span>
       </div>
 
       <div class="re-input-item">
-        <span class="re-input-item-label">直属上级</span>
+        <span class="re-input-item-label"
+          >直属上级<span class="re-input-item-star">*</span></span
+        >
         <span class="re-input-item-input">{{ leaderDao.userName }}</span>
         <!-- <img class="re-item-icon" :src="right" /> -->
       </div>
 
       <div class="div-line"></div>
       <div class="re-attch-item">
-        <span class="re-attch-label">附件资料</span>
+        <span class="re-attch-label"
+          >附件资料<span class="re-input-item-star">*</span></span
+        >
         <span class="re-attch-hint">(请上传不超过50M的JPG、PNG图片)</span>
       </div>
       <div class="re-attch-box">
@@ -467,7 +531,9 @@ async function areaConfig() {
     </div>
 
     <div class="re-btn-box">
-      <button :disabled="loading" @click="onSubmit">提 交</button>
+      <Button :disabled="loading || canCommit()" @click="onSubmit">
+        提 交
+      </Button>
     </div>
 
     <Popup v-model:show="showCityPopup" round position="bottom">
@@ -538,6 +604,12 @@ async function areaConfig() {
   color: #4e5969;
   font-size: 14px;
   line-height: 20px;
+}
+.re-input-item-star {
+  color: red;
+  font-size: 18px;
+  line-height: 20px;
+  font-weight: 500;
 }
 .re-input-item-input {
   flex: 1;
