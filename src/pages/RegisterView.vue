@@ -542,6 +542,7 @@ async function areaConfig() {
         :options="cityList"
         :field-names="cityNames"
         @finish="onAreaConfirm"
+        @close="showCityPopup = false"
       />
     </Popup>
 

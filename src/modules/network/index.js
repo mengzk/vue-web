@@ -13,8 +13,7 @@ export function request({
   return new Promise((resolve) => {
     const host = AppConfig.host;
     headers['Content-Type'] = "application/json";
-    headers['token'] = "eb3b79a4f5974b6a8d78a81c60efdb02";
-    headers['accessToken'] = "eb3b79a4f5974b6a8d78a81c60efdb02";
+    // headers['accessToken'] = "eb3b79a4f5974b6a8d78a81c60efdb02";
     
     const options = {
       url: `${host}${url}`,
