@@ -2,9 +2,9 @@ import "./main.css";
 
 import { createApp } from "vue";
 // import { createPinia } from "pinia";
-import VConsole from 'vconsole';
+// import VConsole from 'vconsole';
 
-const vConsole = new VConsole();
+// const vConsole = new VConsole();
 
 // import vant from 'vant';
 import 'vant/lib/index.css';

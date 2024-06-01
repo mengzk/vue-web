@@ -20,6 +20,8 @@ export function request({
       method,
       params,
       headers,
+      mode: "cors",
+      credentials: "include",
     };
     // 显示加载中
     onShowLoading(true);
