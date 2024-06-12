@@ -9,7 +9,7 @@ const AppConfig = {
   env: 'prod',
   // host: '/api',
   // host: 'http://175.24.133.208:80'
-  host: 'https://admin.ledug.cn/api'
+  host: 'https://h5.ledug.cn/api'
 }
 
 export default AppConfig;

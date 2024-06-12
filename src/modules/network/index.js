@@ -8,20 +8,21 @@ export function request({
   url,
   method = "GET",
   params = {},
-  headers = {},
+  // headers = {},
 } = {}) {
   return new Promise((resolve) => {
     const host = AppConfig.host;
-    headers['Content-Type'] = "application/json";
     // headers['accessToken'] = "eb3b79a4f5974b6a8d78a81c60efdb02";
-    
+    const headers = new Headers();
+    headers.append("Content-Type", "application/json");
+
     const options = {
       url: `${host}${url}`,
       method,
       params,
       headers,
-      mode: "cors",
-      credentials: "include",
+      // mode: "cors",
+      // credentials: "include",
     };
     // 显示加载中
     onShowLoading(true);
@@ -53,7 +54,7 @@ function parseData(res, url) {
     code = data.code;
     msg = data.statusText || data.data;
     data = data.data;
-  }else {
+  } else {
     msg = data.returnMsg || data.data;
   }
   return { code, data, msg: "" };
