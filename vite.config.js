@@ -19,4 +19,18 @@ export default defineConfig({
       plugins: [pxToRem],
     },
   },
+  server: {
+    port: 4000,
+    proxy: {
+      "/api": {
+        target: "http://49.235.134.235:8080",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ""),
+      },
+    },
+    hmr: {
+      overlay: false,
+    },
+    host: "0.0.0.0",
+  },
 });
