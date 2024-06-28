@@ -20,7 +20,8 @@ import { RouterView } from "vue-router";
         <component :is="Component" />
       </transition>
     </router-view>
-
+    <!-- 使用任何自定义过渡和回退到 `fade` -->
+    <!-- <transition :name="route.meta.transition || 'fade'"> -->
     <router-view v-slot="{ Component }">
       <transition>
         <keep-alive>
@@ -33,14 +34,12 @@ import { RouterView } from "vue-router";
 </script>
 
 <template>
-  <!-- <RouterView /> -->
-  <router-view v-slot="{ Component }">
-    <!-- 使用任何自定义过渡和回退到 `fade` -->
-    <!-- <transition :name="route.meta.transition || 'fade'"> -->
+  <router-view />
+  <!-- <router-view v-slot="{ Component }">
     <transition name="fade">
       <component :is="Component" />
     </transition>
-  </router-view>
+  </router-view> -->
 </template>
 
 <style scoped></style>

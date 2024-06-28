@@ -40,12 +40,25 @@ const router = createRouter({
       meta: { transition: "slide-left" },
       component: () => import("../pages/HomeView.vue"),
     },
-
     {
       path: "/login",
       name: "Login",
       meta: { transition: "slide-left" },
       component: () => import("../pages/LoginView.vue"),
+    },
+    {
+      path: "/account",
+      name: "Account",
+      meta: { transition: "slide-left" },
+      component: () => import("../components/layout/Layout.vue"),
+      children: [
+        {
+          path: "info",
+          name: "Info",
+          meta: { transition: "slide-left" },
+          component: () => import("../pages/account/UserView.vue"),
+        }
+      ]
     },
     {
       path: "/workbench",
@@ -105,6 +118,12 @@ const router = createRouter({
       path: "/notfound",
       name: "Notfound",
       meta: { transition: "slide-left" },
+      component: () => import("../pages/NotfoundView.vue"),
+    },
+    {
+      path: "/404",
+      name: "NotFound",
+      meta: { title: "404", hidden: true },
       component: () => import("../pages/NotfoundView.vue"),
     },
   ],
