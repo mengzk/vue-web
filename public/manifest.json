@@ -1,0 +1,24 @@
+{
+  "name": "step",
+  "version": "0.0.1",
+  "env": "prod",
+  "date": "20240415175027",
+  "dev": "0.0.1",
+  "prod": "0.0.1",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "type": "image/x-icon",
+      "sizes": "64x64"
+    },
+    {
+      "src": "logo192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}
