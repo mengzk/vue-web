@@ -1,69 +1,26 @@
 /**
  * Author: Meng
- * Date: 2024-04-15
- * Modify: 2024-04-15
- * Desc:
+ * Date: 2023-06-09
+ * Modify: 2023-06-09
+ * Desc: 
  */
-
-import axios from "axios";
-
-const instance = axios.create({
-  // baseURL: '',
-  timeout: 30000, // 毫秒
-  headers: { "Content-Type": "application/json; charset=utf-8" },
-});
-
-const headers = { "Content-Type": "multipart/form-data" };
-// 上传
-export function upload() {
-  return new Promise((resolve, reject) => {
-    const data = new FormData();
-    data.append("params", new Blob([JSON.stringify({user: '', age: ''})], { type: "application/json" }));
-    instance
-      .request({ url: "", data, headers })
-      .then((response) => {
-        resolve(response);
-      })
-      .catch((err) => {
-        reject(err);
-      });
-  });
-}
-
-// 下载
-export function download(url) {
-  return new Promise((resolve, reject) => {
-    instance
-      .request({ url })
-      .then((response) => {
-        resolve(response);
-      })
-      .catch((err) => {
-        reject(err);
-      });
-  });
-}
-
-
-const host = 'http://la'; // 服务器地址
+const host = ''; // 服务器地址
 // const headers = {'Content-Type': 'multipart/form-data'}; // 请求头
 
 // 上传
-export function upload2({ file, path='', params = {} } = {}) {
+export function upload({ file, url='', params = {} } = {}) {
   return new Promise((resolve, reject) => {
 
-    const url = `${host}${path}`;
+    const url3 = `${host}${url}`;
 
     const formData = new FormData();
     formData.append("file", file);
-    // Object.keys(params).forEach((key) => {
-    //   formData.append(key, params[key]);
-    // });
-    formData.append("params", new Blob([JSON.stringify(params)], { type: "application/json" }));
+    formData.append("param", new Blob([JSON.stringify(params)], { type: "application/json" }));
 
-    fetch(url, { method: "POST", data: formData })
+    fetch(url3, { method: "POST", body: formData })
       .then((res) => res.json())
       .then((res) => {
+        // console.log(res)
         resolve(res);
       })
       .catch((err) => {
@@ -72,7 +29,7 @@ export function upload2({ file, path='', params = {} } = {}) {
   });
 }
 // 上传
-export function uploads2({ files = [], path='', params = {} } = {}) {
+export function uploads({ files = [], path='', params = {} } = {}) {
   return new Promise((resolve, reject) => {
     const url = `${host}${path}`;
 
@@ -93,4 +50,8 @@ export function uploads2({ files = [], path='', params = {} } = {}) {
         reject(err);
       });
   });
+}
+// 下载
+export function download(url) {
+  return new Promise((resolve, reject) => {});
 }
