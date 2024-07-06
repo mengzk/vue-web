@@ -1,10 +1,6 @@
-<script setup>
-const bgImgUrl =
-  "https://s.cn.bing.net/th?id=OHR.BrightonBoxes_ZH-CN0947219018_1920x1080.webp";
-</script>
-
 <template>
   <div class="home">
+    <Header />
     <img class="home-img-bg" :src="bgImgUrl" />
     <div class="home2">
       <div class="home-banner"></div>
@@ -87,6 +83,14 @@ const bgImgUrl =
     </div>
   </div>
 </template>
+
+<script setup>
+import Header from '@/components/Header.vue';
+const bgImgUrl =
+  "https://s.cn.bing.net/th?id=OHR.BrightonBoxes_ZH-CN0947219018_1920x1080.webp";
+</script>
+
+
 <style scoped>
 .home {
   display: flex;
