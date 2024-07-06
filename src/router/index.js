@@ -38,7 +38,7 @@ const router = createRouter({
       path: "/home",
       name: "home",
       meta: { transition: "slide-left" },
-      component: () => import("../pages/HomeView.vue"),
+      component: () => import("../pages/MainView.vue"),
     },
     {
       path: "/login",
@@ -57,8 +57,8 @@ const router = createRouter({
           name: "Info",
           meta: { transition: "slide-left" },
           component: () => import("../pages/account/UserView.vue"),
-        }
-      ]
+        },
+      ],
     },
     {
       path: "/workbench",
