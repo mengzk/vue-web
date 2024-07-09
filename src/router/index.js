@@ -28,103 +28,68 @@ const router = createRouter({
     // return new Promise((resolve, reject) => { setTimeout(() => { resolve({ left: 0, top: 0 }); }, 500) });
   },
   routes: [
+    // {
+    //   path: "",
+    //   name: "launch",
+    //   component: LaunchView,
+    // },
     {
       path: "/",
-      name: "launch",
-      meta: { transition: "slide-left" },
-      component: LaunchView,
-    },
-    {
-      path: "/home",
-      name: "home",
-      meta: { transition: "slide-left" },
-      component: () => import("../pages/MainView.vue"),
+      name: "Main",
+      redirect: "/home",
+      component: () => import("../pages/main/MainView.vue"),
+      children: [
+        {
+          path: "home",
+          name: "Home",
+          meta: { transition: "slide-left" },
+          component: () => import("../pages/main/HomeView.vue"),
+        },
+        {
+          path: "hot",
+          name: "Hot",
+          meta: { transition: "slide-left" },
+          component: () => import("../pages/main/HotView.vue"),
+        },
+        {
+          path: "my",
+          name: "My",
+          meta: { transition: "slide-left" },
+          component: () => import("../pages/main/MyView.vue"),
+        },
+        {
+          path: "account",
+          name: "Account",
+          meta: { transition: "slide-left" },
+          // component: () => import("../components/layout/Layout.vue"),
+          children: [
+            {
+              path: "info",
+              name: "Info",
+              meta: { transition: "slide-left" },
+              component: () => import("../pages/account/UserView.vue"),
+            },
+          ],
+        },
+      ]
     },
     {
       path: "/login",
       name: "Login",
       meta: { transition: "slide-left" },
-      component: () => import("../pages/LoginView.vue"),
-    },
-    {
-      path: "/account",
-      name: "Account",
-      meta: { transition: "slide-left" },
-      component: () => import("../components/layout/Layout.vue"),
-      children: [
-        {
-          path: "info",
-          name: "Info",
-          meta: { transition: "slide-left" },
-          component: () => import("../pages/account/UserView.vue"),
-        },
-      ],
-    },
-    {
-      path: "/workbench",
-      name: "Workbench",
-      redirect: "",
-      meta: { transition: "slide-left" },
-      component: () => import("../pages/menu/Workbench.vue"),
-      children: [
-        {
-          path: "about",
-          name: "About",
-          meta: { transition: "slide-left" },
-          component: () => import("../pages/menu/AboutView.vue"),
-        },
-        {
-          path: "user",
-          name: "User",
-          meta: { transition: "slide-left" },
-          component: () => import("../pages/menu/UserView.vue"),
-        },
-      ],
-    },
-    {
-      path: "/tools",
-      name: "Tools",
-      redirect: "",
-      meta: { transition: "slide-left" },
-      component: () => import("../pages/tools/Workbench.vue"),
-      children: [
-        {
-          path: "pm",
-          name: "PM",
-          meta: { transition: "slide-left" },
-          component: () => import("../pages/tools/PMView.vue"),
-        },
-        {
-          path: "designer",
-          name: "Designer",
-          meta: { transition: "slide-left" },
-          component: () => import("../pages/tools/DesignerView.vue"),
-        },
-        {
-          path: "coupon",
-          name: "Coupon",
-          meta: { transition: "slide-left" },
-          component: () => import("../pages/tools/CouponView.vue"),
-        },
-        {
-          path: "web",
-          name: "Webpage",
-          meta: { transition: "slide-left" },
-          component: () => import("../pages/tools/WebPage.vue"),
-        },
-      ],
+      component: () => import("../pages/account/LoginView.vue"),
     },
     {
       path: "/notfound",
       name: "Notfound",
       meta: { transition: "slide-left" },
-      component: () => import("../pages/NotfoundView.vue"),
+      component: () => import("../pages/warn/NotfoundView.vue"),
     },
     {
       path: "/404",
       name: "NotFound",
       meta: { title: "404", hidden: true },
-      component: () => import("../pages/NotfoundView.vue"),
+      component: () => import("../pages/warn/NotfoundView.vue"),
     },
   ],
 });

@@ -4,6 +4,7 @@ import { RouterView } from "vue-router";
 
 <template>
   <section class="container">
+    <h1>首页</h1>
     <router-view v-slot="{ Component }">
       <keep-alive>
         <component :is="Component" />
