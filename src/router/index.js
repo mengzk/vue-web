@@ -10,7 +10,7 @@
 
     const id = route.params.id
  */
-import { createRouter, createWebHistory } from "vue-router";
+import { createRouter, createWebHistory, createWebHashHistory } from "vue-router";
 import LaunchView from "../pages/LaunchView.vue";
 
 /**
@@ -98,5 +98,18 @@ const router = createRouter({
     },
   ],
 });
+
+/**
+ * 重置路由
+ */
+export function resetRouter() {
+  const newRouter = createRouter({
+    history: createWebHashHistory(),
+    strict: true,
+    scrollBehavior: () => ({ left: 0, top: 0 }),
+    routes: []
+  });
+  router.matcher = newRouter.matcher;
+}
 
 export default router;
