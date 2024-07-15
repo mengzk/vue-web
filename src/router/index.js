@@ -91,7 +91,7 @@ const router = createRouter({
       component: () => import("../pages/warn/NotfoundView.vue"),
     },
     {
-      path: "/404",
+      path: "/*",
       name: "NotFound",
       meta: { title: "404", hidden: true },
       component: () => import("../pages/warn/NotfoundView.vue"),
@@ -105,9 +105,9 @@ const router = createRouter({
 export function resetRouter() {
   const newRouter = createRouter({
     history: createWebHashHistory(),
-    strict: true,
     scrollBehavior: () => ({ left: 0, top: 0 }),
-    routes: []
+    strict: true,
+    routes: [],
   });
   router.matcher = newRouter.matcher;
 }
