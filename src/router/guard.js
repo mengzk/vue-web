@@ -2,9 +2,11 @@
  * Author: Meng
  * Date: 2024-06-28
  * Modify: 2024-06-28
- * Desc: 
+ * Desc: 路由守卫
  */
 import router from "./index";
+
+let routeStack = []; // 路由栈
 
 // 全局前置守卫
 // router.beforeEach((to, from) => {});
@@ -35,5 +37,6 @@ router.beforeResolve(async (to, from) => {
 // 注册全局后置钩子，然而和守卫不同的是，这些钩子不会接受 next 函数也不会改变导航本身
 // 对于分析、更改页面标题、声明页面等辅助功能以及许多其他事情都很有用。
 router.afterEach((to, from) => {
+  console.log("router afterEach", to);
   to.meta.transition = "slide-left";
 });
