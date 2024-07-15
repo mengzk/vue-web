@@ -3,12 +3,17 @@
   --app-theme-dark: #0056b3;
   --app-bg: #f8f9fa;
 
-  --app-text: #232323;
-  --app-text-dark: #ffffff;
-  
+  --color: #007bff;
+  --color2: #007bff;
+  --color3: #007bff;
+  --color4: #007bff;
+  --color5: #007bff;
+  --color6: #007bff;
+
   --text-title: #232323;
   --text-subtitle: #676767;
   --text-value: #323232;
+  --text-desc: #979797;
   --text-hint: #979797;
 
   --btn-color: #007bff;

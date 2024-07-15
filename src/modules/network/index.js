@@ -16,6 +16,7 @@ export function request({
   loading = true,
   loadingText = "加载中...",
   toast = true,
+  // parseData = parseData,
   count = 0,
   maxCount = 3,
 } = {}) {

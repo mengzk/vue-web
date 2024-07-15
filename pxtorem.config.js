@@ -8,7 +8,7 @@ const pxToRem = pxtovw({
   viewportUnit: "vw", // 指定需要转换成的视窗单位，默认vw
   fontViewportUnit: "vw", // 指定字体需要转换成的视窗单位，默认vw
   selectorBlackList: [], // 指定不转换为视窗单位的类名，
-  minPixelValue: 12, // 默认值1，小于或等于1px则不进行转换
+  minPixelValue: 2, // 默认值1，小于或等于1px则不进行转换
   mediaQuery: true, // 是否在媒体查询的css代码中也进行转换，默认false
   replace: true, // 是否转换后直接更换属性值
   exclude: [/node_modules/], // 设置忽略文件，用正则做目录名匹配
