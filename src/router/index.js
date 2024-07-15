@@ -9,10 +9,15 @@
     router.push({ name: 'search', query: { ...route.query, id: 1} })
 
     const id = route.params.id
- * 
  */
 import { createRouter, createWebHistory } from "vue-router";
 import LaunchView from "../pages/LaunchView.vue";
+
+/**
+ * 获取路由权限
+ * 匹配用户权限
+ * 注册路由
+ */
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -29,8 +34,8 @@ const router = createRouter({
   },
   routes: [
     // {
-    //   path: "",
-    //   name: "launch",
+    //   path: "launch",
+    //   name: "Launch",
     //   component: LaunchView,
     // },
     {
