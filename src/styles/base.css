@@ -40,7 +40,7 @@ prefers-scheme支持三个值 :
   -no-preference：无指定
   -light：亮色
   -dark：暗色
-  
+
 // JS查询是系统是否为暗色
 matchMedia('(prefers-color-scheme: dark)').matches
 */
@@ -73,7 +73,7 @@ body {
   transition:
     color 0.5s,
     background-color 0.5s;
-  line-height: 1.6;
+  line-height: 1.2;
   font-family:
     Inter,
     -apple-system,
