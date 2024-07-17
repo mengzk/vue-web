@@ -5,10 +5,11 @@
  * Desc:
  */
 
-import AppConfig from "../../config/index";
+import Configs from "@/config/index";
+import Constants from "@/config/constant";
 
 // 环境及服务器设置
-export const env_hosts = {
+const netHosts = {
   prod: {
     api: "http://def.demo.com",
     order: "http://order.demo.com",
@@ -33,21 +34,21 @@ export function requestUrl(tag, path) {
 
 // 获取指定标签环境域名
 export function getHostFromTag(tag, env) {
-  const envTag = env || AppConfig.defEnv;
+  const envTag = env || Configs.defEnv;
   const domain = tag || "api";
-  return env_hosts[envTag][domain];
+  return netHosts[envTag][domain];
 }
 
 // 请求头及参数处理
 export function mergeHeaders(headers={}) {
+
   return {
-    authentication: "applicatio",
-    secret: "",
-    token: "",
+    // authentication: Constants.appid,
+    secret: Constants.secret,
+    token: Constants.token,
     ...headers
   };
 }
-
 
 // 请求头及参数处理
 export function mergeParams(params={}) {

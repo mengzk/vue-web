@@ -5,9 +5,9 @@
  * Desc: 
  */
 
-const AppConfig = {
+const Configs = {
   env: '',
   host: '',
 }
 
-export default AppConfig;
+export default Configs;
