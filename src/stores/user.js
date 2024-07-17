@@ -2,7 +2,8 @@
  * Author: Meng
  * Date: 2024-04-16
  * Modify: 2024-04-16
- * Desc:
+ * Desc: 
+ * watch配合pinia实现全局状态管理,需要的页面是keep-alive的
  */
 import { ref, computed } from "vue";
 import { defineStore } from "pinia";
