@@ -1,5 +1,11 @@
+<template>
+  <div class="my">
+    <h1>我的</h1>
+  </div>
+</template>
+
 <script setup>
-import { ref } from "vue";
+import { onActivated, onDeactivated, ref } from "vue";
 import { useRouter } from "vue-router";
 
 const router = useRouter();
@@ -22,11 +28,6 @@ function handleClick2() {
 }
 </script>
 
-<template>
-  <div class="my">
-    <h1>我的</h1>
-  </div>
-</template>
 <style scoped>
 .my {
   /* flex: 1;
@@ -35,5 +36,4 @@ function handleClick2() {
   position: relative; */
   /* background-color: rgba(0, 0, 0, 0.8); */
 }
-
 </style>

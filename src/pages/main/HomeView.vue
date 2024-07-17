@@ -1,13 +1,13 @@
-<script setup>
-  import { ref } from 'vue';
-
-</script>
-
 <template>
- <div class="my">
+  <div class="my">
     <h1>首页</h1>
   </div>
 </template>
+
+<script setup>
+import { onActivated, onDeactivated, ref } from "vue";
+</script>
+
 <style scoped>
 .home {
   /* flex: 1;
@@ -33,5 +33,4 @@
   height: 200px;
   background-color: antiquewhite;
 }
-
 </style>

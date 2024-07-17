@@ -1,4 +1,5 @@
 @import "./styles/ele.css";
+@import "./styles/text.css";
 
 body {
   margin: 0;
@@ -23,6 +24,7 @@ body {
 }
 
 .page {
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   position: relative;
@@ -36,11 +38,6 @@ body {
 
 .row {
   display: flex;
-  flex-direction: row;
-}
-
-.flex {
-  flex: 1;
 }
 
 .column {
@@ -52,13 +49,44 @@ body {
   align-items: center;
   justify-content: center;
 }
-
 .ai-center {
   align-items: center;
 }
-
 .jc-center {
   justify-content: center;
+}
+
+.jc-s-b {
+  justify-content: space-between;
+}
+.jc-s-a {
+  justify-content: space-around;
+}
+.jc-s-e {
+  justify-content: space-evenly;
+}
+
+.flex {
+  flex: 1;
+}
+
+.card {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.1);
+}
+
+.btn {
+  display: inline-block;
+  padding: 8px 16px;
+  border-radius: 4px;
+  background-color: var(--btn-color);
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+.btn:hover {
+  background-color: var(--btn-color-hover);
 }
 
 .ellip {
