@@ -14,7 +14,7 @@ const store = new OSS({
   accessKeySecret: "",
   bucket: ""
 })
-// const storePath = "https://oss.aliyuncs.com/";
+// const storePath = "https://test.com/";
 
 function ossUpload(project, fileDir, env) {
   const storePath = `${env}/${project}`
@@ -65,15 +65,17 @@ function startUpload(storePath, dir, files) {
 }
 
 async function deleteDir(prefix) {
-  console.log("---> delete", prefix)
-  const list = await store.list({ prefix })
-  const files = list.objects || []
-  // console.log("---> delete", files)
-  return Promise.all(
-    files.map((file) => {
-      return store.delete(file.name, { quiet: true, recursive: true })
-    })
-  )
+  console.log("------> delete dir", prefix)
+  const list = await store.list({ prefix, "max-keys": 1000 });
+  if(list) {
+    let files = list.objects || [];
+    console.log("------> total file:", files.length);
+    if(files.length > 0) {
+      files = (list.objects || []).map((file) => file.name);
+      return store.deleteMulti(files, {quiet: true});
+    }
+  }
+  return;
 }
 
 function getFiles(files, dir, childDir = "") {
