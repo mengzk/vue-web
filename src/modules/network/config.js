@@ -4,10 +4,13 @@
  * Modify: 2023-06-09
  * Desc:
  */
+const envData = import.meta.env // 环境变量
 
 import Configs from "@/config/index";
 import Constants from "@/config/constant";
 
+
+console.log('------> envData', envData);
 // 环境及服务器设置
 const netHosts = {
   prod: {

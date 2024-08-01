@@ -5,7 +5,13 @@
 </template>
 
 <script setup>
-import { onActivated, onDeactivated, ref } from "vue";
+import { onActivated, onDeactivated, ref, onMounted } from "vue";
+
+import {getHomeData} from '../../modules/api/index'
+
+onMounted(() => {
+  getHomeData("HomeView mounted");
+});
 </script>
 
 <style scoped>
