@@ -19,6 +19,7 @@
   --btn-color: #007bff;
   --btn-color-hover: #0056b3;
 
-  --app-header-height: 50px;
-  --app-footer-height: 100px;
+  --header-height: 50px;
+  --safe-top: 24px;
+  --safe-bottom: 24px;
 }
