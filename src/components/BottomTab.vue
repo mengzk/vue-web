@@ -49,15 +49,15 @@ function onItemTap(e) {
   align-items: center;
   justify-content: center;
 
-  color: #000;
+  color: #979797;
   font-size: 14px;
-  font-weight: 500;
   text-align: center;
   text-decoration: none;
   /* cursor: pointer; */
 }
 .tab-link:hover {
   color: coral;
+  font-weight: 500;
 }
 .tab-link-icon {
   width: 24px;
