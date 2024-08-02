@@ -5,7 +5,19 @@
 </template>
 
 <script setup>
-import { onActivated, onDeactivated, ref } from "vue";
+import { onActivated, onDeactivated, onMounted, ref } from "vue";
+
+onMounted(() => {
+  console.log("onMounted ---> HotView");
+});
+
+onActivated(() => {
+  console.log("onActivated ---> HotView");
+});
+
+onDeactivated(() => {
+  console.log("onDeactivated ---> HotView");
+});
 </script>
 
 <style scoped>

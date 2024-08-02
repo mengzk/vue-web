@@ -13,6 +13,15 @@ import { getHomeData } from "../../modules/api/index";
 import { uploadImgs } from "../../modules/network/upload";
 
 onMounted(() => {
+  console.log("onMounted ---> HomeView");
+});
+
+onActivated(() => {
+  console.log("onActivated ---> HomeView");
+});
+
+onDeactivated(() => {
+  console.log("onDeactivated ---> HomeView");
 });
 
 function onFileChange(e) {

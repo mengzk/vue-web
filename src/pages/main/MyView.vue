@@ -5,10 +5,23 @@
 </template>
 
 <script setup>
-import { onActivated, onDeactivated, ref } from "vue";
+import { onActivated, onDeactivated, onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 
 const router = useRouter();
+
+
+onMounted(() => {
+  console.log("onMounted ---> MyView");
+});
+
+onActivated(() => {
+  console.log("onActivated ---> MyView");
+});
+
+onDeactivated(() => {
+  console.log("onDeactivated ---> MyView");
+});
 
 const count = ref(5);
 
