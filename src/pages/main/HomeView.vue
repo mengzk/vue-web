@@ -1,17 +1,31 @@
 <template>
   <div class="my">
     <h1>首页</h1>
+
+    <input type="file" multiple @change="onFileChange" />
   </div>
 </template>
 
 <script setup>
 import { onActivated, onDeactivated, ref, onMounted } from "vue";
 
-import {getHomeData} from '../../modules/api/index'
+import { getHomeData } from "../../modules/api/index";
+import { uploadImgs } from "../../modules/network/upload";
 
 onMounted(() => {
   getHomeData("HomeView mounted");
 });
+
+function onFileChange(e) {
+  const files = e.target.files;
+  console.log(files);
+  const list = [];
+  for (let i = 0; i < files.length; i++) {
+    list.push(files[i]);
+  }
+
+  uploadImgs(list);
+}
 </script>
 
 <style scoped>

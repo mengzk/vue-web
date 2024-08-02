@@ -6,7 +6,42 @@ import { requestUrl } from "./config";
 import { httpClient } from "./axios";
 
 // 上传多文件
-export function uploadImgs(files = []) {}
+export function uploadImgs(files = []) {
+  return new Promise((resolve) => {
+    if (!files || files.length == 0) {
+      resolve({ code: -1000, msg: "文件不能为空", data: null });
+      return;
+    }
+    const uploadUrl = 'https://oss.com.cn/api/fileUpload/upload';
+    const body = new FormData();
+    body.append("bucket", "bajan");
+    files.forEach((file) => {
+      body.append("files", file);
+    });
+
+    fetch(uploadUrl, {
+      body,
+      method: "POST",
+    })
+      .then((response) => response.json())
+      .then((res) => {
+        console.log("uploadImgs resolve ", res);
+        if (res) {
+          if (res.code == "1") {
+            resolve({ code: 0, msg: "ok", data: res.data });
+          } else {
+            resolve({ code: res.code, data: null, msg: res.returnMsg });
+          }
+        } else {
+          resolve({ code: -1001, msg: "", data: null });
+        }
+      })
+      .catch((err) => {
+        console.log("uploadImgs Error ", err);
+        resolve({ code: -1002, msg: "", data: null });
+      });
+  });
+}
 
 // 上传文件
 export function uploadImg({ file, url, params = {}, method = "POST" } = {}) {

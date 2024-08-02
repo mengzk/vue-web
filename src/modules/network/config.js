@@ -37,7 +37,7 @@ export function requestUrl(tag, path) {
 
 // 获取指定标签环境域名
 export function getHostFromTag(tag, env) {
-  const envTag = env || Configs.defEnv;
+  const envTag = env || 'prod';
   const domain = tag || "api";
   return netHosts[envTag][domain];
 }
