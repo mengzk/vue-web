@@ -14,7 +14,7 @@ dist-ssr
 coverage
 *.local
 *.lock
-package-lock.json
+package-lock.json*
 
 /cypress/videos/
 /cypress/screenshots/
