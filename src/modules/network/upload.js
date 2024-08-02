@@ -14,7 +14,7 @@ export function uploadImgs(files = []) {
     }
     const uploadUrl = 'https://oss.com.cn/api/fileUpload/upload';
     const body = new FormData();
-    body.append("bucket", "bajan");
+    body.append("bucket", "bajanju-p");
     files.forEach((file) => {
       body.append("files", file);
     });

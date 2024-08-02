@@ -14,6 +14,7 @@ import { uploadImgs } from "../../modules/network/upload";
 
 onMounted(() => {
   console.log("onMounted ---> HomeView");
+
 });
 
 onActivated(() => {
