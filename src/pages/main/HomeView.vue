@@ -13,7 +13,6 @@ import { getHomeData } from "../../modules/api/index";
 import { uploadImgs } from "../../modules/network/upload";
 
 onMounted(() => {
-  getHomeData("HomeView mounted");
 });
 
 function onFileChange(e) {
