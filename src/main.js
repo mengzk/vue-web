@@ -19,6 +19,6 @@ app.mount("#app");
 
 app.config.errorHandler = (err, instance, info) => {
   // 向追踪服务报告错误
-  console.error("------> vue errorHandler");
-  console.error(err, instance, info);
+  console.warn("------> vue errorHandler");
+  console.warn(err, instance, info);
 };

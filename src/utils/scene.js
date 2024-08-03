@@ -5,8 +5,6 @@
  * Desc: 打开场景
  */
 
-console.log('------> scene.js');
-
 window.addEventListener('load', function () {
-  console.log('------> window load', location.href);
+  console.log('------> scene load', location.href);
 });

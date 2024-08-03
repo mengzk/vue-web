@@ -1,16 +1,37 @@
 <template>
-  <div class="my">
-    <h1>首页</h1>
-
-    <input type="file" multiple @change="onFileChange" />
+  <div class="home">
+    <img class="home-banner" src="https://picsum.photos/1920/1080" alt="home-bg" />
+    <div class="home-menus">
+      <template v-for="item in menuList" :key="item.id">
+        <div class="menu-box">{{ item.title }}</div>
+      </template>
+    </div>
+    <div class="home-grid">
+      <template v-for="item in itemList" :key="item.id">
+        <div class="home-box">{{ item.title }}</div>
+      </template>
+    </div>
   </div>
 </template>
 
 <script setup>
-import { onActivated, onDeactivated, ref, onMounted } from "vue";
+import { onMounted, onActivated, onDeactivated, ref } from "vue";
 
-import { getHomeData } from "../../modules/api/index";
-import { uploadImgs } from "../../modules/network/upload";
+const menuList = ref([
+  {id: 0, title: '', desc: '', img: ''},
+  {id: 0, title: '', desc: '', img: ''},
+  {id: 0, title: '', desc: '', img: ''},
+  {id: 0, title: '', desc: '', img: ''},
+]);
+const itemList = ref([
+  {id: 0, title: '', desc: '', img: ''},
+  {id: 0, title: '', desc: '', img: ''},
+  {id: 0, title: '', desc: '', img: ''},
+  {id: 0, title: '', desc: '', img: ''},
+  {id: 0, title: '', desc: '', img: ''},
+  {id: 0, title: '', desc: '', img: ''},
+  {id: 0, title: '', desc: '', img: ''},
+]);
 
 onMounted(() => {
   console.log("onMounted ---> HomeView");
@@ -25,41 +46,45 @@ onDeactivated(() => {
   console.log("onDeactivated ---> HomeView");
 });
 
-function onFileChange(e) {
-  const files = e.target.files;
-  console.log(files);
-  const list = [];
-  for (let i = 0; i < files.length; i++) {
-    list.push(files[i]);
-  }
-
-  uploadImgs(list);
-}
 </script>
 
 <style scoped>
 .home {
-  /* flex: 1;
-  display: flex;
-  flex-direction: column;
+  height: 100%;
+  overflow: scroll;
   position: relative;
-  background-color: bisque; */
-  /* background-color: rgba(0, 0, 0, 0.8); */
 }
-.home-img-bg {
-  width: 100vw;
-  height: 100vh;
+.home-banner {
+  height: 120px;
+  margin: 0 12px;
+  border-radius: 8px;
   object-fit: cover;
 }
 
-.home-grid {
+.home-menus {
+  margin: 16px 12px;
   display: grid;
+  grid-row-gap: 12px;
+  grid-column-gap: 12px;
   grid-template-columns: repeat(4, 1fr);
 }
 
+.menu-box {
+  height: 64px;
+  border-radius: 8px;
+  background-color: orchid;
+}
+.home-grid {
+  margin: 0 12px;
+  display: grid;
+  grid-row-gap: 12px;
+  grid-column-gap: 12px;
+  grid-template-columns: repeat(2, 1fr);
+}
+
 .home-box {
-  width: 100px;
   height: 200px;
-  background-color: antiquewhite;
+  border-radius: 8px;
+  background-color: orchid;
 }
 </style>

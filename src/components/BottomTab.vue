@@ -1,22 +1,24 @@
 <template>
   <div class="tab-layout">
-    <router-link class="tab-link" to="/home" @click="onItemTap">
-      <img class="tab-link-icon" />
+    <router-link :class="`tab-link ${curTab == 0 ? 'active':''}`" to="/home" @click="onItemTap(0)">
+      <img :class="`tab-link-icon ${curTab == 0 ? 'active':''}`" />
       <span>Home</span>
     </router-link>
-    <router-link class="tab-link" to="/hot" @click="onItemTap">
-      <img class="tab-link-icon" />
+    <router-link :class="`tab-link ${curTab == 1 ? 'active':''}`" to="/hot" @click="onItemTap(1)">
+      <img :class="`tab-link-icon ${curTab == 1 ? 'active':''}`" />
       <span>Hot</span>
     </router-link>
-    <router-link class="tab-link" to="/my" @click="onItemTap">
-      <img class="tab-link-icon" />
+    <router-link :class="`tab-link ${curTab == 2 ? 'active':''}`" to="/my" @click="onItemTap(2)">
+      <img :class="`tab-link-icon ${curTab == 2 ? 'active':''}`" />
       <span>My</span>
     </router-link>
   </div>
 </template>
 
 <script setup>
-defineProps({
+import { ref, onMounted } from 'vue';
+
+const props = defineProps({
   tabs: {
     type: Array,
     required: false,
@@ -28,8 +30,21 @@ defineProps({
   },
 });
 
+const curTab = ref(0);
+
+onMounted(() => {
+  const paths = (window.location.href||'').split('/');
+  const path = paths[paths.length - 1];
+  if (path.includes('hot')) {
+    onItemTap(1);
+  } else if (path.includes('my')) {
+    onItemTap(2);
+  }
+});
+
 function onItemTap(e) {
-  console.log('onItemTap', e);
+  curTab.value = e;
+  props.onChangeTab && props.onChangeTab(e);
 }
 </script>
 
@@ -55,7 +70,7 @@ function onItemTap(e) {
   text-decoration: none;
   /* cursor: pointer; */
 }
-.tab-link:hover {
+.tab-link.active {
   color: coral;
   font-weight: 500;
 }
@@ -65,7 +80,7 @@ function onItemTap(e) {
   margin-bottom: 4px;
   background-color: #c3c3c3;
 }
-.tab-link-icon:hover {
+.tab-link-icon.active {
   background-color: coral;
 }
 </style>
