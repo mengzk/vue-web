@@ -85,6 +85,12 @@ const router = createRouter({
       component: () => import("../pages/account/LoginView.vue"),
     },
     {
+      path: "/test",
+      name: "Test",
+      meta: { title: "test", hidden: true },
+      component: () => import("../pages/warn/TestView.vue"),
+    },
+    {
       path: "/notfound",
       name: "Notfound",
       meta: { transition: "slide-left" },

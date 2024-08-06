@@ -12,9 +12,9 @@ export function uploadImgs(files = []) {
       resolve({ code: -1000, msg: "文件不能为空", data: null });
       return;
     }
-    const uploadUrl = 'https://oss.com.cn/api/fileUpload/upload';
+    const uploadUrl = 'http://192.168.242.219:8093/file/uploads';
     const body = new FormData();
-    body.append("bucket", "bajanju-p");
+    // body.append("bucket", "bajanju-p");
     files.forEach((file) => {
       body.append("files", file);
     });
