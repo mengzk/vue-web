@@ -127,4 +127,22 @@ export async function download(url) {
     console.log(err);
     return null;
   });
+  // try {
+      // const a = document.createElement("a")
+      // a.href = path
+      // a.download = fileName
+      // document.body.appendChild(a)
+      // a.click()
+      // document.body.removeChild(a)
+
+      // const iframe = document.createElement("iframe")
+      // iframe.style.display = "none"
+      // iframe.src = `javascript: '<script>location.href="${path}"</script>'`
+      // document.body.appendChild(iframe)
+      // setTimeout(() => {
+      //   document.body.removeChild(iframe)
+      // }, 6000)
+    // } catch (e) {
+    //   console.log("downloadFile catch", e)
+    // }
 }
