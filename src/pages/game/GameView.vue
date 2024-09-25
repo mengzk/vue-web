@@ -10,6 +10,9 @@ let isDraw = false;
 let radius = 30;
 let animFrameId = 0;
 
+let count = 0;
+let speed = 3;
+
 let imgTop = 0;
 const BG_WIDTH = 512
 const BG_HEIGHT = 512
@@ -27,7 +30,7 @@ onMounted(() => {
   canvas.width = innerWidth;
   canvas.height = innerHeight;
 
-  onDraw(ctx);
+  onLoop(canvas, ctx);
 
   canvas.addEventListener('mousedown', (e) => {
     e.preventDefault();
@@ -39,18 +42,12 @@ onMounted(() => {
     const x = e.clientX;
     const y = e.clientY;
 
-    imgTop += 2;
-    if(imgTop >= innerHeight) {
-      imgTop = 0;
-    }
-
-    if(x > 0 && x < innerWidth-radius) {
+    if (x > 0 && x < innerWidth - radius) {
       point.x = x;
     }
-    if(y > 0 && y < innerHeight - radius) {
+    if (y > 0 && y < innerHeight - radius) {
       point.y = y;
     }
-    onLoop(canvas, ctx);
   });
 
   canvas.addEventListener('mouseup', (e) => {
@@ -59,54 +56,58 @@ onMounted(() => {
 });
 
 function onLoop(canvas, ctx) {
+  count += 1;
   cancelAnimationFrame(animFrameId);
-  animFrameId = requestAnimationFrame(() => { }, canvas);
-  onDraw(ctx);
+  animFrameId = requestAnimationFrame(() => onLoop(canvas, ctx), canvas);
+  // if (count % speed == 0) {
+    onDraw(ctx);
+  // }
 }
 
 function onDraw(ctx) {
   // ctx.fillStyle = 'black';
   ctx.clearRect(0, 0, innerWidth, innerHeight);
+  drawBg(ctx);
 
   ctx.fillStyle = 'black';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  drawBg(ctx);
-
   ctx.fillStyle = 'red';
-  // ctx.fillRect(point.x, point.y, 30, 30);
   ctx.beginPath();
   ctx.moveTo(point.x, point.y);
   ctx.arc(point.x, point.y, radius, 0, Math.PI * 2, true);
-  // ctx.strokeStyle = 'red';
-  // ctx.stroke();
   ctx.fill();
 }
 
 function drawBg(ctx) {
-  ctx.drawImage(
-      img,
-      0,
-      0,
-      BG_WIDTH,
-      BG_HEIGHT,
-      0,
-      -innerHeight + imgTop,
-      innerWidth,
-      innerHeight
-    )
+  imgTop += 2;
+  if (imgTop >= innerHeight) {
+    imgTop = 0;
+  }
 
-    ctx.drawImage(
-      img,
-      0,
-      0,
-      BG_WIDTH,
-      BG_HEIGHT,
-      0,
-      imgTop,
-      innerWidth,
-      innerHeight
-    )
+  ctx.drawImage(
+    img,
+    0,
+    0,
+    BG_WIDTH,
+    BG_HEIGHT,
+    0,
+    -innerHeight + imgTop,
+    innerWidth,
+    innerHeight
+  )
+
+  ctx.drawImage(
+    img,
+    0,
+    0,
+    BG_WIDTH,
+    BG_HEIGHT,
+    0,
+    imgTop,
+    innerWidth,
+    innerHeight
+  )
 }
 
 </script>
