@@ -4,12 +4,21 @@
 
 <script setup>
 import { onMounted } from 'vue';
+import bgImg from '../../assets/bg.png';
 
 let isDraw = false;
 let radius = 30;
 let animFrameId = 0;
+
+let imgTop = 0;
+const BG_WIDTH = 512
+const BG_HEIGHT = 512
+
 const point = { x: 0, y: 0 };
 const { innerWidth, innerHeight } = window;
+
+const img = new Image();
+img.src = bgImg;
 
 onMounted(() => {
   const canvas = document.getElementById('canvas');
@@ -29,6 +38,11 @@ onMounted(() => {
     if (!isDraw) return;
     const x = e.clientX;
     const y = e.clientY;
+
+    imgTop += 2;
+    if(imgTop >= innerHeight) {
+      imgTop = 0;
+    }
 
     if(x > 0 && x < innerWidth-radius) {
       point.x = x;
@@ -57,6 +71,8 @@ function onDraw(ctx) {
   ctx.fillStyle = 'black';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
+  drawBg(ctx);
+
   ctx.fillStyle = 'red';
   // ctx.fillRect(point.x, point.y, 30, 30);
   ctx.beginPath();
@@ -65,6 +81,32 @@ function onDraw(ctx) {
   // ctx.strokeStyle = 'red';
   // ctx.stroke();
   ctx.fill();
+}
+
+function drawBg(ctx) {
+  ctx.drawImage(
+      img,
+      0,
+      0,
+      BG_WIDTH,
+      BG_HEIGHT,
+      0,
+      -innerHeight + imgTop,
+      innerWidth,
+      innerHeight
+    )
+
+    ctx.drawImage(
+      img,
+      0,
+      0,
+      BG_WIDTH,
+      BG_HEIGHT,
+      0,
+      imgTop,
+      innerWidth,
+      innerHeight
+    )
 }
 
 </script>
