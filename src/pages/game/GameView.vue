@@ -56,7 +56,7 @@ onMounted(() => {
 });
 
 function onLoop(canvas, ctx) {
-  count += 1;
+  // count += 1;
   cancelAnimationFrame(animFrameId);
   animFrameId = requestAnimationFrame(() => onLoop(canvas, ctx), canvas);
   // if (count % speed == 0) {
@@ -67,10 +67,11 @@ function onLoop(canvas, ctx) {
 function onDraw(ctx) {
   // ctx.fillStyle = 'black';
   ctx.clearRect(0, 0, innerWidth, innerHeight);
-  drawBg(ctx);
-
+ 
   ctx.fillStyle = 'black';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  drawBg(ctx);
 
   ctx.fillStyle = 'red';
   ctx.beginPath();
