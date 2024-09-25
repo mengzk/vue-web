@@ -10,7 +10,11 @@
 
     const id = route.params.id
  */
-import { createRouter, createWebHistory, createWebHashHistory } from "vue-router";
+import {
+  createRouter,
+  createWebHistory,
+  createWebHashHistory,
+} from "vue-router";
 import LaunchView from "../pages/LaunchView.vue";
 
 /**
@@ -40,22 +44,14 @@ const router = createRouter({
     // },
     {
       path: "/",
-      name: "Main",
-      redirect: "/home",
-      component: () => import("../pages/main/MainView.vue"),
+      name: "Game",
+      // redirect: "/game",
+      component: () => import("../pages/game/GameView.vue"),
+    },
+    {
+      path: "/account",
+      name: "Account",
       children: [
-        {
-          path: "home",
-          name: "Home",
-          meta: { transition: "slide-left" },
-          component: () => import("../pages/main/HomeView.vue"),
-        },
-        {
-          path: "hot",
-          name: "Hot",
-          meta: { transition: "slide-left" },
-          component: () => import("../pages/main/HotView.vue"),
-        },
         {
           path: "my",
           name: "My",
@@ -63,20 +59,20 @@ const router = createRouter({
           component: () => import("../pages/main/MyView.vue"),
         },
         {
-          path: "account",
-          name: "Account",
+          path: "info",
+          name: "Info",
           meta: { transition: "slide-left" },
           // component: () => import("../components/layout/Layout.vue"),
           children: [
             {
-              path: "info",
-              name: "Info",
+              path: "user",
+              name: "User",
               meta: { transition: "slide-left" },
               component: () => import("../pages/account/UserView.vue"),
             },
           ],
         },
-      ]
+      ],
     },
     {
       path: "/login",

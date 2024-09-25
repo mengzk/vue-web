@@ -12,7 +12,7 @@ const router = useRouter();
 onMounted(() => {
   const timer3 = setTimeout(() => {
     clearTimeout(timer3);
-    router.push("/home");
+    router.push("/game");
   }, 1000);
 });
 </script>

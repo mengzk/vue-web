@@ -2,17 +2,13 @@ import { fileURLToPath, URL } from "node:url";
 
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
-import vueJsx from "@vitejs/plugin-vue-jsx";
 import legacy from "@vitejs/plugin-legacy";
 
-import pxToRem from "./pxtorem.config";
-
-const isDev = process.env.NODE_ENV !== "production";
+// const isDev = process.env.NODE_ENV !== "production";
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
     vue(),
-    vueJsx(),
     legacy({
       targets: ["chrome < 60", "edge < 15"],
       modernPolyfills: true,
@@ -25,7 +21,7 @@ export default defineConfig({
   },
   css: {
     postcss: {
-      plugins: [pxToRem],
+      plugins: [],
     },
   },
   server: {
