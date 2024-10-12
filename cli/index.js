@@ -20,6 +20,8 @@ const appInfo = require("../package.json")
 const choices = ["dev", "test", "uat", "prod"] // 发布环境 -不推荐设置prod
 // console.log('------> options', process.argv);
 
+// 读取 manifest.json环境配置
+
 // 获取环境
 let tagEnv = process.argv[2]
 

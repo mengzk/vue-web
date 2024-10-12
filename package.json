@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "build:prod": "vite build --mode production",
-    "deploy": "node cli/deploy && vite build && node cli/index dev",
+    "deploy": "node cli/deploy && vite build && node cli/index",
     "push:prod": "vite build --mode production && node cli/index prod",
     "preview": "vite preview"
   },

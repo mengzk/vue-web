@@ -60,6 +60,8 @@ function deployApp(env) {
   // 写入环境变量
   fs.writeFileSync(".env", envKeys);
 
+  // 写入环境到 manifest.json
+
   console.log(`<------------------ deploy  ${env}  end ------------------>`);
   // 开始编译项目
 }
