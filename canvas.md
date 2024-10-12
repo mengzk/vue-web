@@ -687,7 +687,7 @@ function draw() {
   ctx.fillStyle = "rgba(255, 128, 255, 0.5)";
   ctx.fillRect(0, 50, 100, 100);
 }
-````
+```
 
 ## 裁切路径
 
