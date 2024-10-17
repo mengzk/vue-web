@@ -25,7 +25,7 @@ See [Vite Configuration Reference](https://vitejs.dev/config/).
 - 输入绑定: [文档](https://cn.vuejs.org/guide/essentials/forms.html)
 - 列表渲染: [文档](https://cn.vuejs.org/guide/essentials/list.html)
 
-
+html2canvas
 
 ## 性能
 
