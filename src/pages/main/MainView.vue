@@ -12,13 +12,20 @@
 
 <script setup>
 import { onMounted, ref } from 'vue';
+import { useRouter } from "vue-router";
 import BottomTab from '@/components/BottomTab.vue';
 import Toolbar from '@/components/Toolbar.vue';
+
+const router = useRouter();
 
 const activeTab = ref(0);
 
 onMounted(() => {
   console.log('onMounted ---> MainView');
+  const timer = setTimeout(() => {
+    clearTimeout(timer);
+    router.push('/test');
+  }, 1000);
 });
 
 function onChangeTab(tab) {

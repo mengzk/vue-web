@@ -10,7 +10,6 @@ import { onMounted } from 'vue';
 
 import { uploadImgs } from '../../modules/network/upload';
 
-
 function onFileChange(e) {
   const files = e.target.files;
   console.log(files);

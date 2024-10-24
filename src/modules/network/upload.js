@@ -1,6 +1,8 @@
 /**
- * Web 上传/下载文件
- * /pklApi/file/uploadFile
+ * Author: Meng
+ * Date: 2024-10-24
+ * Modify: 2024-10-24
+ * Desc: 文件上传下载
  */
 import { requestUrl } from "./config";
 import { httpClient } from "./axios";
