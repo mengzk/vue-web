@@ -7,8 +7,13 @@
  */
 
 const Constants = {
+  isIos: false,
+  agent: '',
+  language: '',
   version: '1.0.0',
   platform: '',
+  vendor: '',
+  
   secret: '',
   appid: '',
   token: '',

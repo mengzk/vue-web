@@ -30,4 +30,21 @@ import { RouterView } from "vue-router";
   </router-view> -->
 </template>
 
-<style scoped></style>
+<style scoped>
+
+.test-css {
+  color: red;
+  font-size: 20px;
+
+  &>h1 {
+    color: orange;
+  }
+
+  &>:first-child {
+    color: blue;
+  }
+  &>span:last-child {
+    color: green;
+  }
+}
+</style>
