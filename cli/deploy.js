@@ -45,9 +45,10 @@ function deployApp(env) {
   let tagEnv = {};
   switch (env) {
     case "dev":
+      tagEnv = dotenv.parse(fs.readFileSync(".env.dev"));
     case "test":
     case "uat":
-      tagEnv = dotenv.parse(fs.readFileSync(".env.dev"));
+      tagEnv = dotenv.parse(fs.readFileSync(".env.test"));
       break;
     default:
       tagEnv = dotenv.parse(fs.readFileSync(".env.prod"));

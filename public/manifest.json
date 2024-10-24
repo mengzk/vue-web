@@ -1,7 +1,7 @@
 {
   "name": "step",
   "version": "0.0.1",
-  "env": "uat",
+  "env": "test",
   "date": "20240415175027",
   "dev": "0.0.1",
   "prod": "0.0.1",
