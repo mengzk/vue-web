@@ -4,7 +4,24 @@
  * Modify: 2024-07-12
  * Desc:
  */
-const OSS = require("ali-oss")
+// const OSS = require("ali-oss")
+const OSS = class {
+  constructor(options) {
+    this.options = options
+  }
+  async head() {
+    return Promise.resolve()
+  }
+  async list() {
+    return Promise.resolve()
+  }
+  async deleteMulti() {
+    return Promise.resolve()
+  }
+  async put() {
+    return Promise.resolve()
+  }
+};
 // const path = require("node:path")
 const fs = require("node:fs")
 
